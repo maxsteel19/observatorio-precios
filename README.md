@@ -1,56 +1,89 @@
-# Welcome to your Expo app 👋
+# Observatorio de Precios PAC
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+App para comparar precios de la canasta básica en Pedro Aguirre Cerda, hecha con **Expo (React Native)** a partir del mockup HTML del Proyecto Integrado. Funciona en **Android, iOS y web** con el mismo código.
 
-## Get started
+Incluye los 5 flujos del mockup:
 
-1. Install dependencies
+| Perfil | Qué puede hacer |
+|---|---|
+| **Ciudadano** (sin cuenta) | Buscar productos (incluye búsqueda semántica: «ingredientes para cazuela»), ver resultados en lista o mapa, filtrar y ordenar, ver la ficha del comercio, el historial de precios con gráfico, comparar entre comercios y reportar precios incorrectos. |
+| **Fiscalizador** | Resumen del día, seleccionar comercio, capturar la pizarra de precios (OCR simulado), confirmar los valores según su confianza, ingreso manual e historial de capturas. |
+| **Comerciante** | Panel con indicadores, ingresar precios y ofertas (solo productos del catálogo municipal), carga masiva desde CSV (simulada), gestionar sucursales con ubicación en el mapa e historial. |
+| **Administrador** | Dashboard con KPIs y evolución de precios por categoría, catálogo de productos, comercios, aprobación de cuentas de comerciantes, usuarios y roles, y log de auditoría. En pantallas anchas usa una barra lateral. |
+| **Acceso / registro** | Login, recuperación de contraseña y registro de comerciante en 2 pasos (con validación de RUT). |
 
-   ```bash
-   npm install
-   ```
+Todo funciona **sin internet** con datos de ejemplo en memoria, pensado para la feria. Los cambios se ven al instante entre perfiles: lo que guarda el fiscalizador o el comerciante aparece de inmediato en la app ciudadana.
 
-2. Start the app
+## Cómo ejecutarla
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Requisitos: Node.js LTS y la app **Expo Go** en tu celular (Android o iPhone).
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+- **En el celular:** escanea el QR que aparece en la terminal con Expo Go (el celular y el computador deben estar en la misma red Wi-Fi).
+- **En el navegador:** presiona `w` en la terminal o abre http://localhost:8081.
 
-### Other setup steps
+## Cuentas de prueba
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+En la pantalla de acceso hay botones de **acceso directo demo** (Administrador, Fiscalizador, Comercio). También puedes escribir:
 
-## Learn more
+| Perfil | Email | Clave |
+|---|---|---|
+| Administrador | `admin@demo.cl` | `demo1234` |
+| Fiscalizador | `fiscalizador@demo.cl` | `demo1234` |
+| Comerciante | `comercio@demo.cl` | `demo1234` |
 
-To learn more about developing your project with Expo, look at the following resources:
+> Son cuentas de demostración definidas en `src/data/seed.ts`; no hay backend real todavía.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Guion sugerido para la feria (3–4 minutos)
 
-## Join the community
+1. **Ciudadano:** toca la sugerencia «Ingredientes para cazuela baratos» → muestra el banner de búsqueda semántica, la etiqueta «Más barato» y cambia a **Mapa**.
+2. Abre un comercio → toca un producto → muestra el **gráfico de historial** (toca los puntos) y «Compara en otros comercios».
+3. **Fiscalizador:** Iniciar sesión → Fiscalizador → Nueva captura → elige un comercio → **Capturar** → revisa los campos de baja confianza → Confirmar → «Ver en la app ciudadana»: los precios ya están publicados.
+4. **Comerciante:** ingresa una oferta y muéstrala en la app ciudadana.
+5. **Registro + Administrador:** registra un comercio nuevo → entra como Administrador → **Cuentas** → apruébalo → revisa la **Auditoría**.
 
-Join our community of developers creating universal apps.
+> Los datos viven en memoria: al recargar la app vuelven al estado inicial (útil para reiniciar la demo entre visitantes). Navega dentro de la app en vez de recargar la página para conservar los cambios.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Estructura
+
+```
+src/
+  app/                 Pantallas (Expo Router: cada archivo es una ruta)
+    index.tsx            Ciudadano · inicio
+    resultados.tsx       Ciudadano · resultados de búsqueda
+    comercio/[id].tsx    Ciudadano · ficha del comercio
+    historial.tsx        Ciudadano · historial de precio
+    reportar.tsx         Ciudadano · reportar precio
+    auth/                Login, recuperar, registro, pendiente
+    fiscalizador/        Perfil fiscalizador
+    comerciante/         Perfil comerciante (pestañas + formularios)
+    admin/               Panel de administración
+  components/          Componentes reutilizables (UI, mapa ilustrado, gráfico, etc.)
+  data/                Catálogo, comercios y datos de ejemplo
+  lib/                 Búsqueda, formato de precios/fechas, validación de RUT
+  state/AppState.tsx   Estado global (único lugar a cambiar para conectar un backend)
+  theme.ts             Colores y medidas del mockup
+```
+
+## Comandos útiles
+
+```bash
+npm run typecheck   # revisa tipos (TypeScript)
+npm run lint        # revisa el código (ESLint)
+npx expo-doctor     # diagnostica dependencias y configuración
+```
+
+## Próximos pasos sugeridos
+
+- **Backend con Supabase:** tablas `productos`, `comercios`, `precios`, `usuarios`, `auditoria`; login con Supabase Auth y permisos por rol con Row Level Security. Solo hay que reemplazar las acciones de `src/state/AppState.tsx`.
+- **Cámara y OCR reales:** `expo-camera` para la captura y un servicio de OCR/IA para leer la pizarra.
+- **APK para la feria:** `npx eas-cli@latest build -p android --profile preview` genera un APK instalable sin Android Studio.
+- **Ícono y pantalla de inicio propios** en `assets/images/` (hoy son los de Expo).
+
+## Nota técnica (Windows)
+
+En Windows, el generador de tipos de Expo Router (SDK 58) registra las rutas `index` anidadas como `/fiscalizador/index` en vez de `/fiscalizador`. La navegación funciona bien; `src/lib/routes.ts` (`panelHref`) evita ese falso error de TypeScript.
