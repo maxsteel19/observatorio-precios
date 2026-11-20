@@ -7,6 +7,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useToast } from '@/components/Toast';
+import { AppIcon, type IconName as ArtName } from '@/components/icons';
 import { Button, Card, IconButton, Row, Screen, SectionTitle, type IconName } from '@/components/ui';
 import { DIDESE, FOMENTO } from '@/data/didese';
 import { mailUrl, openLink, phoneUrl } from '@/lib/links';
@@ -15,11 +16,12 @@ import { colors, fonts, font, shadow, spacing } from '@/theme';
 
 const LOGO = require('../../assets/images/logo-pac.png');
 
-const SERVICES: { emoji: string; title: string; text: string; href: Href }[] = [
-  { emoji: '🛒', title: 'Canasta básica', text: 'Precios de abarrotes, lácteos, carnes y verduras', href: '/resultados' },
-  { emoji: '⛽', title: 'Bencinas', text: 'Bencina, diésel y parafina por estación', href: '/bencinas' },
-  { emoji: '🎄', title: 'Especiales de temporada', text: 'Navidad, útiles escolares, Halloween y más', href: SPECIALS_HREF },
-  { emoji: '💳', title: 'Tarjeta Vecina PAC', text: 'Descuentos en comercios con convenio', href: '/tarjeta-vecina' },
+const SERVICES: { icon: ArtName; title: string; text: string; href: Href }[] = [
+  { icon: 'canasta', title: 'Canasta básica', text: 'Precios de abarrotes, lácteos, carnes y verduras', href: '/resultados' },
+  { icon: 'bencina', title: 'Bencinas', text: 'Bencina, diésel y parafina por estación', href: '/bencinas' },
+  { icon: 'especiales', title: 'Especiales de temporada', text: 'Navidad, útiles escolares, Halloween y más', href: SPECIALS_HREF },
+  { icon: 'tarjeta', title: 'Tarjeta Vecina PAC', text: 'Descuentos en comercios con convenio', href: '/tarjeta-vecina' },
+  { icon: 'asistente', title: 'Asistente con IA', text: 'Pregunta por precios y servicios con tus palabras', href: '/asistente' },
 ];
 
 const SOURCES: { icon: IconName; title: string; text: string }[] = [
@@ -69,7 +71,7 @@ export default function About() {
           {SERVICES.map((s) => (
             <Card key={s.title} onPress={() => router.push(s.href)} style={styles.row}>
               <View style={styles.rowArt}>
-                <Text style={{ fontSize: 24 }}>{s.emoji}</Text>
+                <AppIcon name={s.icon} size={38} />
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.rowTitle}>{s.title}</Text>

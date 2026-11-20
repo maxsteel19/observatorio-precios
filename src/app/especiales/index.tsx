@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppHeader } from '@/components/AppHeader';
 import { HeaderLoginButton } from '@/components/HeaderLoginButton';
+import { AppIcon } from '@/components/icons';
 import { Content, Screen } from '@/components/ui';
 import { STATUS_LABEL, sortedSpecials, specialStatus } from '@/data/specials';
 import { colors, fonts, font, radius, spacing } from '@/theme';
@@ -36,7 +37,7 @@ export default function Specials() {
                   <Text style={styles.summary}>{s.summary}</Text>
                   <Text style={styles.period}>{s.period}</Text>
                 </View>
-                <Text style={styles.emoji}>{s.emoji}</Text>
+                <AppIcon name={s.icon} size={66} />
               </LinearGradient>
             </Pressable>
           );
@@ -69,5 +70,4 @@ const styles = StyleSheet.create({
   title: { color: colors.white, fontSize: font.xl + 1, fontFamily: fonts.extrabold, letterSpacing: -0.4 },
   summary: { color: 'rgba(255,255,255,0.92)', fontSize: font.sm, fontFamily: fonts.medium },
   period: { color: 'rgba(255,255,255,0.75)', fontSize: font.xs + 1, fontFamily: fonts.semibold },
-  emoji: { fontSize: 54 },
 });

@@ -1,12 +1,13 @@
 // Especiales de temporada del Observatorio Municipal de Precios: comparativas de productos típicos
 // de cada fecha, destacando a emprendedoras y comerciantes locales. Precios y negocios de ejemplo.
+import type { IconName } from '@/components/icons';
 
 export type SpecialOption = { store: string; price: number; local?: boolean };
-export type SpecialItem = { name: string; unit: string; emoji: string; options: SpecialOption[] };
+export type SpecialItem = { name: string; unit: string; icon: IconName; options: SpecialOption[] };
 export type Special = {
   id: string;
   title: string;
-  emoji: string;
+  icon: IconName;
   period: string;
   /** Meses (1–12) en que el especial está vigente. */
   months: number[];
@@ -20,7 +21,7 @@ export const SPECIALS: Special[] = [
   {
     id: 'navidad',
     title: 'Navidad',
-    emoji: '🎄',
+    icon: 'arbol',
     period: 'Diciembre 2026',
     months: [11, 12],
     colors: ['#2E8B4A', '#14532D'],
@@ -31,7 +32,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Pan de pascua',
         unit: '1 kg',
-        emoji: '🍞',
+        icon: 'pandepascua',
         options: [
           { store: 'Panadería La Victoria', price: 5990, local: true },
           { store: 'Supermercado PAC', price: 6490 },
@@ -41,7 +42,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Cola de mono',
         unit: '1 L',
-        emoji: '🥛',
+        icon: 'leche',
         options: [
           { store: 'Sabores de Antaño', price: 4500, local: true },
           { store: 'Comercial Los Andes', price: 5290 },
@@ -50,7 +51,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Pollo entero',
         unit: 'kg',
-        emoji: '🍗',
+        icon: 'pollo',
         options: [
           { store: 'Feria Lo Valledor · Puesto 12', price: 2290 },
           { store: 'Supermercado PAC', price: 2490 },
@@ -59,7 +60,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Juguete didáctico',
         unit: 'unidad',
-        emoji: '🧸',
+        icon: 'regalo',
         options: [
           { store: 'Juguetería Don Tito', price: 7990, local: true },
           { store: 'Bazar La Estrella', price: 8990, local: true },
@@ -68,7 +69,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Luces navideñas',
         unit: '100 luces',
-        emoji: '✨',
+        icon: 'estrella',
         options: [
           { store: 'Bazar La Estrella', price: 3990, local: true },
           { store: 'Ferretería El Maestro', price: 4590 },
@@ -79,7 +80,7 @@ export const SPECIALS: Special[] = [
   {
     id: 'utiles',
     title: 'Útiles escolares',
-    emoji: '🎒',
+    icon: 'mochila',
     period: 'Marzo 2027',
     months: [2, 3],
     colors: ['#1E88D0', '#0B4F8A'],
@@ -89,7 +90,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Cuaderno universitario',
         unit: '100 hojas',
-        emoji: '📓',
+        icon: 'cuaderno',
         options: [
           { store: 'Librería El Estudiante', price: 1290, local: true },
           { store: 'Bazar La Estrella', price: 1490, local: true },
@@ -99,7 +100,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Lápices de colores',
         unit: 'caja de 12',
-        emoji: '🖍️',
+        icon: 'lapiz',
         options: [
           { store: 'Bazar La Estrella', price: 1990, local: true },
           { store: 'Librería El Estudiante', price: 2190, local: true },
@@ -108,7 +109,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Mochila escolar',
         unit: 'unidad',
-        emoji: '🎒',
+        icon: 'mochila',
         options: [
           { store: 'Confecciones Lo Valledor', price: 12990, local: true },
           { store: 'Comercial Los Andes', price: 15990 },
@@ -117,7 +118,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Estuche',
         unit: 'unidad',
-        emoji: '✏️',
+        icon: 'lapiz',
         options: [
           { store: 'Librería El Estudiante', price: 2490, local: true },
           { store: 'Bazar La Estrella', price: 2790, local: true },
@@ -128,7 +129,7 @@ export const SPECIALS: Special[] = [
   {
     id: 'halloween',
     title: 'Halloween',
-    emoji: '🎃',
+    icon: 'calabaza',
     period: 'Octubre 2026',
     months: [10],
     colors: ['#F07A1A', '#9C3B07'],
@@ -139,7 +140,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Disfraz infantil',
         unit: 'unidad',
-        emoji: '🧙',
+        icon: 'mascara',
         options: [
           { store: 'Disfraces Mágicos', price: 9990, local: true },
           { store: 'Bazar La Estrella', price: 11990, local: true },
@@ -148,7 +149,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Dulces surtidos',
         unit: '1 kg',
-        emoji: '🍬',
+        icon: 'dulce',
         options: [
           { store: 'Dulces Rosita', price: 4990, local: true },
           { store: 'Minimarket La Esquina', price: 5490 },
@@ -158,7 +159,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Calabaza',
         unit: 'unidad',
-        emoji: '🎃',
+        icon: 'calabaza',
         options: [
           { store: 'Feria Lo Valledor · Puesto 12', price: 2500 },
           { store: 'Almacén Doña Rosa', price: 2990 },
@@ -167,7 +168,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Maquillaje de fantasía',
         unit: 'set',
-        emoji: '🎨',
+        icon: 'estrella',
         options: [
           { store: 'Disfraces Mágicos', price: 3490, local: true },
           { store: 'Bazar La Estrella', price: 3990, local: true },
@@ -178,7 +179,7 @@ export const SPECIALS: Special[] = [
   {
     id: 'fiestas-patrias',
     title: 'Fiestas Patrias',
-    emoji: '🪁',
+    icon: 'volantin',
     period: 'Septiembre 2026',
     months: [9],
     colors: ['#D52B34', '#124280'],
@@ -188,7 +189,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Empanada de pino',
         unit: 'unidad',
-        emoji: '🥟',
+        icon: 'empanada',
         options: [
           { store: 'Panadería La Victoria', price: 1500, local: true },
           { store: 'Sabores de Antaño', price: 1700, local: true },
@@ -198,7 +199,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Carne para asado',
         unit: 'kg',
-        emoji: '🥩',
+        icon: 'carne',
         options: [
           { store: 'Carnicería El Corralero', price: 8990, local: true },
           { store: 'Supermercado PAC', price: 9490 },
@@ -207,7 +208,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Longaniza',
         unit: 'kg',
-        emoji: '🌭',
+        icon: 'carne',
         options: [
           { store: 'Carnicería El Corralero', price: 5490, local: true },
           { store: 'Comercial Los Andes', price: 5990 },
@@ -216,7 +217,7 @@ export const SPECIALS: Special[] = [
       {
         name: 'Volantín',
         unit: 'unidad',
-        emoji: '🪁',
+        icon: 'volantin',
         options: [
           { store: 'Bazar La Estrella', price: 1000, local: true },
           { store: 'Minimarket La Esquina', price: 1200 },

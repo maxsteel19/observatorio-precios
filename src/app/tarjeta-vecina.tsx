@@ -7,6 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { AppHeader } from '@/components/AppHeader';
 import { HeaderLoginButton } from '@/components/HeaderLoginButton';
+import { AppIcon } from '@/components/icons';
 import { useToast } from '@/components/Toast';
 import { Badge, Button, Card, Content, Icon, Row, Screen, SectionTitle } from '@/components/ui';
 import { DIDESE, TARJETA_VECINA } from '@/data/didese';
@@ -128,7 +129,7 @@ export default function TarjetaVecina() {
         <View style={styles.benefits}>
           {TARJETA_VECINA.categories.map((c) => (
             <View key={c.label} style={styles.benefit}>
-              <Text style={styles.benefitEmoji}>{c.emoji}</Text>
+              <AppIcon name={c.icon} size={42} style={{ marginBottom: 2 }} />
               <Text style={styles.benefitTitle}>{c.label}</Text>
               <Text style={styles.benefitText}>{c.detail}</Text>
             </View>
@@ -207,7 +208,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#EDF1F6',
   },
-  benefitEmoji: { fontSize: 26, marginBottom: 2 },
   benefitTitle: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text },
   benefitText: { fontSize: font.xs + 1, color: colors.textSecondary, lineHeight: 16 },
   partner: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.md },

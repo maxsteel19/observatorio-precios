@@ -83,11 +83,26 @@ npx expo-doctor     # diagnostica dependencias y configuración
 - **Cámara y OCR reales:** `expo-camera` para la captura y un servicio de OCR/IA para leer la pizarra.
 - **APK para la feria:** `npx eas-cli@latest build -p android --profile preview` genera un APK instalable sin Android Studio.
 
+## Asistente con IA
+
+En la pantalla **Asistente** (botón «Pregúntale al asistente» del inicio) las vecinas y vecinos preguntan con sus palabras: «¿dónde está más barato el arroz?», «¿qué bencinera conviene?», «¿cómo saco la Tarjeta Vecina?».
+
+- Sigue el enfoque de [mbot](https://github.com/bemtorres/mbot): API de Chat Completions compatible con **OpenAI** (`gpt-4o-mini`) y **DeepSeek** (`deepseek-chat`), con un mensaje `system` que define la personalidad y las reglas, y el historial de la conversación como memoria.
+- La app envía un resumen de sus datos (precios, comercios, bencinas, Tarjeta Vecina, especiales y contacto de la DIDESE) para que la IA responda solo con información del observatorio.
+- **Las claves nunca están en la app:** las usa la ruta de servidor `src/app/api/chat+api.ts`, leyendo `OPENAI_API_KEY` y `DEEPSEEK_API_KEY` desde `.env.local` (ignorado por git). Copia `.env.example` como `.env.local` para configurarlas.
+- Si un proveedor falla se usa el otro, y si no hay conexión el asistente responde con los datos guardados en la app (respuesta marcada «sin conexión»).
+- Para que funcione en el APK, la ruta `/api/chat` debe estar publicada en un servidor (por ejemplo EAS Hosting) y su dirección se define en `EXPO_PUBLIC_API_URL` al compilar.
+
 ## Diseño
 
 - **Logo e ícono:** el ícono de la app, la pantalla de carga y el logo interno se generaron desde `assets/images/logo-municipal-original.jpg`, con fondo azul sólido `#124280`, bordes limpios y mayor resolución.
 - **Paleta:** tomada del logo municipal, en `src/theme.ts`: azul institucional para la estructura, verde para las acciones, naranja para las ofertas, y amarillo, celeste y rojo como acentos.
 - **Tipografía:** Plus Jakarta Sans (`@expo-google-fonts/plus-jakarta-sans`) para títulos, precios y botones.
+- **Íconos ilustrados propios** en `src/components/icons/`: unas 40 ilustraciones SVG con volumen para productos, categorías, servicios, beneficios y especiales.
+  - Se dibujan con `<AppIcon name="arroz" size={40} />`.
+  - Las capas están en `definitions.ts` y los colores, la luz y la sombra en `tokens.ts`.
+  - Cada instancia usa ids únicos para sus degradados.
+  - La galería completa se ve en la ruta `/iconos`.
 
 ## Nota técnica (Windows)
 

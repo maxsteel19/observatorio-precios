@@ -6,6 +6,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/AppHeader';
+import { AppIcon } from '@/components/icons';
 import { useToast } from '@/components/Toast';
 import { Badge, Button, Card, EmptyState, Row, Screen } from '@/components/ui';
 import { DIDESE } from '@/data/didese';
@@ -39,7 +40,7 @@ export default function SpecialDetail() {
       <ScrollView contentContainerStyle={{ paddingBottom: spacing.xxl + insets.bottom }}>
         <LinearGradient colors={special.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.hero}>
           <View style={styles.circle} />
-          <Text style={styles.heroEmoji}>{special.emoji}</Text>
+          <AppIcon name={special.icon} size={70} style={styles.heroEmoji} />
           <View style={[styles.status, status === 'vigente' && { backgroundColor: colors.yellow }]}>
             <Text style={[styles.statusText, status === 'vigente' && { color: colors.primaryDark }]}>
               {STATUS_LABEL[status]} · {special.period}
@@ -66,7 +67,7 @@ export default function SpecialDetail() {
               <Card key={item.name} style={{ gap: spacing.sm }}>
                 <Row gap={spacing.md}>
                   <View style={styles.itemArt}>
-                    <Text style={{ fontSize: 26 }}>{item.emoji}</Text>
+                    <AppIcon name={item.icon} size={42} />
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.itemName}>{item.name}</Text>
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     top: -70,
     backgroundColor: 'rgba(255,255,255,0.12)',
   },
-  heroEmoji: { position: 'absolute', right: 18, top: 14, fontSize: 56 },
+  heroEmoji: { position: 'absolute', right: 12, top: 8 },
   status: {
     alignSelf: 'flex-start',
     backgroundColor: 'rgba(255,255,255,0.22)',
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
   statValue: { color: colors.white, fontSize: font.xxl, fontFamily: fonts.extrabold },
   statLabel: { color: 'rgba(255,255,255,0.8)', fontSize: font.xs + 1, fontFamily: fonts.semibold },
   list: { paddingHorizontal: spacing.lg, gap: spacing.md },
-  itemArt: { width: 48, height: 48, borderRadius: 16, backgroundColor: colors.surfaceAlt, alignItems: 'center', justifyContent: 'center' },
+  itemArt: { width: 52, height: 52, borderRadius: 17, backgroundColor: colors.surfaceAlt, alignItems: 'center', justifyContent: 'center' },
   itemName: { fontSize: font.md + 1, fontFamily: fonts.extrabold, color: colors.text },
   itemUnit: { fontSize: font.xs + 1, color: colors.textSecondary },
   bestPrice: { fontSize: font.xl + 2, fontFamily: fonts.extrabold, color: colors.action, letterSpacing: -0.5 },

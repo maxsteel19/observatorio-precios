@@ -8,9 +8,10 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { HeaderLoginButton } from '@/components/HeaderLoginButton';
+import { AppIcon, type IconName } from '@/components/icons';
 import { IllustratedMap } from '@/components/IllustratedMap';
 import { Badge, Screen, SectionLink, SectionTitle } from '@/components/ui';
-import { CATEGORIES, categoryTint, productEmoji, type Product } from '@/data/catalog';
+import { CATEGORIES, categoryTint, productIcon, type Product } from '@/data/catalog';
 import { cheapestStation } from '@/data/fuel';
 import type { PriceEntry } from '@/data/seed';
 import { STATUS_LABEL, sortedSpecials, specialStatus } from '@/data/specials';
@@ -91,34 +92,34 @@ export default function CitizenHome() {
   // Otros servicios del Observatorio Municipal de Precios.
   const specials = sortedSpecials();
   const fuelBest = cheapestStation('93');
-  const tiles: { emoji: string; title: string; text: string; href: Href; tint: string }[] = [
+  const tiles: { icon: IconName; title: string; text: string; href: Href; tint: string }[] = [
     {
-      emoji: '⛽',
+      icon: 'bencina',
       title: 'Bencinas',
       text: fuelBest ? `La 93 desde ${formatPrice(fuelBest.prices['93']!)}` : 'Precios por estación',
       href: '/bencinas',
       tint: colors.yellowLight,
     },
     {
-      emoji: '💳',
+      icon: 'tarjeta',
       title: 'Tarjeta Vecina',
       text: `Descuentos en ${activeStores.filter((s) => s.tarjetaVecina).length} comercios`,
       href: '/tarjeta-vecina',
       tint: colors.primaryLight,
     },
     {
-      emoji: specials[0]!.emoji,
+      icon: specials[0]!.icon,
       title: 'Especiales',
       text: `${specials[0]!.title}: ${STATUS_LABEL[specialStatus(specials[0]!)].toLowerCase()}`,
       href: SPECIALS_HREF,
       tint: colors.actionLight,
     },
-    { emoji: '🏛️', title: 'El observatorio', text: 'Quiénes somos y contacto', href: '/acerca', tint: colors.skyLight },
+    { icon: 'observatorio', title: 'El observatorio', text: 'Quiénes somos y contacto', href: '/acerca', tint: colors.skyLight },
   ];
 
   return (
     <Screen>
-      <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: spacing.xxl + insets.bottom }}>
+      <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: 96 + insets.bottom }}>
         {/* ---------- Encabezado ---------- */}
         <LinearGradient
           colors={['#1A55A0', colors.primary, colors.primaryDark]}
@@ -199,7 +200,7 @@ export default function CitizenHome() {
                 </Pressable>
               </View>
               <View style={styles.bannerArt}>
-                <Text style={styles.bannerEmoji}>{productEmoji(highlight.product)}</Text>
+                <AppIcon name={productIcon(highlight.product)} size={66} />
               </View>
             </LinearGradient>
           </View>
@@ -214,7 +215,7 @@ export default function CitizenHome() {
               onPress={() => router.push(t.href)}
               style={({ pressed }) => [styles.tile, pressed && { transform: [{ scale: 0.97 }] }]}>
               <View style={[styles.tileArt, { backgroundColor: t.tint }]}>
-                <Text style={{ fontSize: 22 }}>{t.emoji}</Text>
+                <AppIcon name={t.icon} size={36} />
               </View>
               <View>
                 <Text style={styles.tileTitle} numberOfLines={1}>
@@ -241,7 +242,7 @@ export default function CitizenHome() {
               onPress={() => router.push({ pathname: '/resultados', params: { categoria: c.id } })}
               style={({ pressed }) => [styles.category, pressed && { transform: [{ scale: 0.96 }] }]}>
               <View style={[styles.categoryTile, { backgroundColor: c.tint }]}>
-                <Text style={styles.categoryEmoji}>{c.emoji}</Text>
+                <AppIcon name={c.icon} size={48} />
               </View>
               <Text style={styles.categoryText}>{c.short}</Text>
             </Pressable>
@@ -325,7 +326,7 @@ export default function CitizenHome() {
                       <Text style={styles.offerPrice}>{formatPrice(price.price)}</Text>
                     </View>
                     <View style={styles.offerArt}>
-                      <Text style={{ fontSize: 40 }}>{productEmoji(product)}</Text>
+                      <AppIcon name={productIcon(product)} size={56} />
                     </View>
                   </LinearGradient>
                 </Pressable>
@@ -347,7 +348,7 @@ export default function CitizenHome() {
                 onPress={() => router.push({ pathname: '/especiales/[id]', params: { id: s.id } })}
                 style={({ pressed }) => [pressed && { opacity: 0.9 }]}>
                 <LinearGradient colors={s.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.special}>
-                  <Text style={styles.specialEmoji}>{s.emoji}</Text>
+                  <AppIcon name={s.icon} size={58} style={styles.specialEmoji} />
                   <View style={[styles.specialStatus, status === 'vigente' && { backgroundColor: colors.yellow }]}>
                     <Text style={[styles.specialStatusText, status === 'vigente' && { color: colors.primaryDark }]}>
                       {STATUS_LABEL[status]}
@@ -375,7 +376,7 @@ export default function CitizenHome() {
               style={({ pressed }) => [styles.card, pressed && { transform: [{ scale: 0.98 }] }]}>
               <View style={styles.cardTop}>
                 <View style={[styles.cardArt, { backgroundColor: categoryTint(product.category) }]}>
-                  <Text style={{ fontSize: 24 }}>{productEmoji(product)}</Text>
+                  <AppIcon name={productIcon(product)} size={40} />
                 </View>
                 {best.offer && <Badge label="Oferta" tone="offer" icon="pricetag" />}
               </View>
@@ -417,6 +418,16 @@ export default function CitizenHome() {
           Datos de demostración. Precios registrados por fiscalizadores municipales, lectura OCR validada y comercios adheridos.
         </Text>
       </ScrollView>
+
+      {/* Botón flotante del asistente con IA */}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Abrir el asistente del observatorio"
+        onPress={() => router.push('/asistente')}
+        style={({ pressed }) => [styles.fab, { bottom: spacing.lg + insets.bottom }, pressed && { transform: [{ scale: 0.95 }] }]}>
+        <Ionicons name="sparkles" size={18} color={colors.yellow} />
+        <Text style={styles.fabText}>Pregúntale al asistente</Text>
+      </Pressable>
     </Screen>
   );
 }
@@ -530,12 +541,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  bannerEmoji: { fontSize: 50 },
 
   categories: { gap: spacing.md, paddingHorizontal: spacing.lg, paddingTop: spacing.md },
   category: { alignItems: 'center', gap: 6, width: 72 },
   categoryTile: { width: 66, height: 66, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
-  categoryEmoji: { fontSize: 30 },
   categoryText: { fontSize: font.xs + 1, fontFamily: fonts.semibold, color: colors.text },
 
   legend: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4 },
@@ -588,7 +597,7 @@ const styles = StyleSheet.create({
     ...shadow.card,
   },
   cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  cardArt: { width: 46, height: 46, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
+  cardArt: { width: 50, height: 50, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   cardName: { fontSize: font.md, fontFamily: fonts.extrabold, color: colors.text, marginTop: 10, letterSpacing: -0.2 },
   cardUnit: { fontSize: font.xs + 1, color: colors.textSecondary, fontFamily: fonts.medium },
   priceRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 6 },
@@ -613,12 +622,12 @@ const styles = StyleSheet.create({
     borderColor: '#EDF1F6',
     ...shadow.card,
   },
-  tileArt: { width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  tileArt: { width: 48, height: 48, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   tileTitle: { fontSize: font.md, fontFamily: fonts.extrabold, color: colors.text },
   tileText: { fontSize: font.xs + 0.5, color: colors.textSecondary, fontFamily: fonts.medium, lineHeight: 15 },
 
   special: { width: 200, minHeight: 150, borderRadius: 22, padding: 16, gap: 4, overflow: 'hidden', justifyContent: 'flex-end' },
-  specialEmoji: { position: 'absolute', right: 12, top: 10, fontSize: 40 },
+  specialEmoji: { position: 'absolute', right: 8, top: 6 },
   specialStatus: {
     alignSelf: 'flex-start',
     backgroundColor: 'rgba(255,255,255,0.22)',
@@ -630,6 +639,20 @@ const styles = StyleSheet.create({
   specialTitle: { color: colors.white, fontSize: font.lg + 1, fontFamily: fonts.extrabold, letterSpacing: -0.3 },
   specialText: { color: 'rgba(255,255,255,0.88)', fontSize: font.xs + 1, fontFamily: fonts.medium, lineHeight: 16 },
 
+  fab: {
+    position: 'absolute',
+    right: spacing.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: colors.primary,
+    borderRadius: radius.pill,
+    paddingLeft: 16,
+    paddingRight: 18,
+    paddingVertical: 13,
+    boxShadow: '0 10px 24px rgba(11, 46, 94, 0.35)',
+  },
+  fabText: { color: colors.white, fontSize: font.sm + 1, fontFamily: fonts.extrabold },
   aboutLink: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: spacing.xl },
   aboutText: { fontSize: font.sm, fontFamily: fonts.bold, color: colors.primary },
   footer: {

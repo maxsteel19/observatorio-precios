@@ -1,37 +1,25 @@
 // Catálogo municipal de productos de la canasta básica.
 // Los comerciantes y fiscalizadores solo pueden registrar precios de productos de este catálogo.
+import { ICON_NAMES, type IconName } from '@/components/icons/definitions';
 
 export type Category = 'abarrotes' | 'lacteos' | 'panaderia' | 'carnes' | 'frutas';
 
 // Colores tomados del logo municipal; `tint` es el fondo suave de los mosaicos.
-export const CATEGORIES: { id: Category; label: string; short: string; emoji: string; color: string; tint: string }[] = [
-  { id: 'abarrotes', label: 'Abarrotes', short: 'Abarrotes', emoji: '🍚', color: '#124280', tint: '#E8EFF8' },
-  { id: 'lacteos', label: 'Lácteos y huevos', short: 'Lácteos', emoji: '🥛', color: '#1E9BD7', tint: '#E4F4FC' },
-  { id: 'panaderia', label: 'Panadería', short: 'Panadería', emoji: '🥖', color: '#D9930F', tint: '#FFF6DC' },
-  { id: 'carnes', label: 'Carnes', short: 'Carnes', emoji: '🍗', color: '#D52B34', tint: '#FDECEC' },
-  { id: 'frutas', label: 'Frutas y verduras', short: 'Verduras', emoji: '🥕', color: '#5E9A1E', tint: '#EEF6E3' },
+export const CATEGORIES: { id: Category; label: string; short: string; icon: IconName; color: string; tint: string }[] = [
+  { id: 'abarrotes', label: 'Abarrotes', short: 'Abarrotes', icon: 'arroz', color: '#124280', tint: '#E8EFF8' },
+  { id: 'lacteos', label: 'Lácteos y huevos', short: 'Lácteos', icon: 'leche', color: '#1E9BD7', tint: '#E4F4FC' },
+  { id: 'panaderia', label: 'Panadería', short: 'Panadería', icon: 'pan', color: '#D9930F', tint: '#FFF6DC' },
+  { id: 'carnes', label: 'Carnes', short: 'Carnes', icon: 'pollo', color: '#D52B34', tint: '#FDECEC' },
+  { id: 'frutas', label: 'Frutas y verduras', short: 'Verduras', icon: 'zanahoria', color: '#5E9A1E', tint: '#EEF6E3' },
 ];
 
-const PRODUCT_EMOJI: Record<string, string> = {
-  arroz: '🍚',
-  aceite: '🌻',
-  azucar: '🍬',
-  harina: '🌾',
-  fideos: '🍝',
-  leche: '🥛',
-  huevos: '🥚',
-  pan: '🥖',
-  pollo: '🍗',
-  carne: '🥩',
-  tomate: '🍅',
-  papa: '🥔',
-  cebolla: '🧅',
-  zanahoria: '🥕',
-};
-
-/** Ilustración del producto (emoji). Los productos nuevos usan el de su categoría. */
-export function productEmoji(product: Pick<Product, 'id' | 'category'>) {
-  return PRODUCT_EMOJI[product.id] ?? CATEGORIES.find((c) => c.id === product.category)?.emoji ?? '🛒';
+/**
+ * Ilustración del producto. Los 14 productos del catálogo inicial tienen un ícono con su mismo id;
+ * los que agregue el administrador usan el ícono de su categoría.
+ */
+export function productIcon(product: Pick<Product, 'id' | 'category'>): IconName {
+  if ((ICON_NAMES as string[]).includes(product.id)) return product.id as IconName;
+  return CATEGORIES.find((c) => c.id === product.category)?.icon ?? 'canasta';
 }
 
 export function categoryTint(category: Category) {

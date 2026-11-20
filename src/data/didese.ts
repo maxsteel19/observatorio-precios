@@ -1,5 +1,6 @@
 // Información pública de la Dirección de Desarrollo Económico (DIDESE) de Pedro Aguirre Cerda,
 // según sus publicaciones en Facebook (noviembre de 2026). El Observatorio Municipal de Precios depende de ella.
+import type { IconName } from '@/components/icons';
 
 const ADDRESS = 'Av. Club Hípico 6238, Pedro Aguirre Cerda';
 
@@ -23,17 +24,17 @@ export const TARJETA_VECINA = {
   members: 'Más de 10.000',
   requirements: ['Tener 18 años o más', 'Vivir o trabajar en Pedro Aguirre Cerda'],
   categories: [
-    { emoji: '🩺', label: 'Salud', detail: 'Atención médica, dental y psicológica' },
-    { emoji: '👓', label: 'Ópticas', detail: 'Salud visual y lentes' },
-    { emoji: '💊', label: 'Farmacia', detail: 'Medicamentos y productos veterinarios' },
-    { emoji: '🐶', label: 'Mascotas', detail: 'Alimento, accesorios, consultas y vacunas' },
-    { emoji: '🔥', label: 'Hogar y gas', detail: 'Gas, decoración y limpieza' },
-    { emoji: '🔧', label: 'Ferretería', detail: 'Fijaciones y suministros hidráulicos' },
-    { emoji: '🚗', label: 'Automóvil', detail: 'Mecánica, estacionamiento y cambio de aceite' },
-    { emoji: '🍰', label: 'Gastronomía', detail: 'Pastelería, helados, almuerzos y café' },
-    { emoji: '💇', label: 'Belleza', detail: 'Peluquería, cosmética y estética' },
-    { emoji: '🧓', label: 'Personas mayores', detail: 'Productos y servicios especiales' },
-  ],
+    { icon: 'salud', label: 'Salud', detail: 'Atención médica, dental y psicológica' },
+    { icon: 'optica', label: 'Ópticas', detail: 'Salud visual y lentes' },
+    { icon: 'farmacia', label: 'Farmacia', detail: 'Medicamentos y productos veterinarios' },
+    { icon: 'mascotas', label: 'Mascotas', detail: 'Alimento, accesorios, consultas y vacunas' },
+    { icon: 'hogar', label: 'Hogar y gas', detail: 'Gas, decoración y limpieza' },
+    { icon: 'ferreteria', label: 'Ferretería', detail: 'Fijaciones y suministros hidráulicos' },
+    { icon: 'automovil', label: 'Automóvil', detail: 'Mecánica, estacionamiento y cambio de aceite' },
+    { icon: 'gastronomia', label: 'Gastronomía', detail: 'Pastelería, helados, almuerzos y café' },
+    { icon: 'belleza', label: 'Belleza', detail: 'Peluquería, cosmética y estética' },
+    { icon: 'mayores', label: 'Personas mayores', detail: 'Productos y servicios especiales' },
+  ] as { icon: IconName; label: string; detail: string }[],
 };
 
 /** Apoyo de la Oficina de Fomento Productivo a los negocios de la comuna. */
