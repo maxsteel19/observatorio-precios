@@ -9,7 +9,7 @@ import { CATEGORIES } from '@/data/catalog';
 import { CATEGORY_INDEX, lastMonthsLabels } from '@/data/seed';
 import { daysBetween, formatDateTime, formatPercent, formatPrice } from '@/lib/format';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -129,18 +129,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
   },
-  kpiLabel: { fontSize: font.xs, color: colors.textSecondary, fontWeight: '700', flexShrink: 1 },
+  kpiLabel: { fontSize: font.xs, color: colors.textSecondary, fontFamily: fonts.bold, flexShrink: 1 },
   kpiIcon: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
-  kpiValue: { fontSize: 28, fontWeight: '800', color: colors.text },
+  kpiValue: { fontSize: 28, fontFamily: fonts.extrabold, color: colors.text },
   kpiSub: { fontSize: font.xs, color: colors.textSecondary },
   columns: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
   chartCard: { flexGrow: 3, flexBasis: 420 },
   side: { flexGrow: 1, flexBasis: 220, gap: spacing.md },
-  cardTitle: { fontSize: font.lg, fontWeight: '800', color: colors.text },
+  cardTitle: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.text },
   cardSub: { fontSize: font.xs, color: colors.textSecondary },
-  varName: { fontSize: font.lg, fontWeight: '800', color: colors.text },
-  varValue: { fontSize: font.lg, fontWeight: '800' },
-  link: { fontSize: font.sm, color: colors.primary, fontWeight: '700' },
+  varName: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.text },
+  varValue: { fontSize: font.lg, fontFamily: fonts.extrabold },
+  link: { fontSize: font.sm, color: colors.primary, fontFamily: fonts.bold },
   list: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   row: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.sm, padding: spacing.md },
   border: { borderTopWidth: 1, borderTopColor: colors.border },

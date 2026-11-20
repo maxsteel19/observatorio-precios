@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 import { AppHeader } from './AppHeader';
 import { LogoutButton } from './LogoutButton';
 import { Content, Screen } from './ui';
@@ -29,7 +29,7 @@ export function AdminScreen({ title, subtitle, actions, children }: { title: str
 const styles = StyleSheet.create({
   content: { width: '100%', maxWidth: 1100, alignSelf: 'center' },
   titleRow: { flexDirection: 'row', alignItems: 'flex-end', flexWrap: 'wrap', gap: spacing.md, marginBottom: spacing.xs },
-  breadcrumb: { fontSize: font.xs, color: colors.textSecondary, fontWeight: '600' },
-  title: { fontSize: font.xxl, fontWeight: '800', color: colors.text },
+  breadcrumb: { fontSize: font.xs, color: colors.textSecondary, fontFamily: fonts.semibold },
+  title: { fontSize: font.xxl, fontFamily: fonts.extrabold, color: colors.text },
   subtitle: { fontSize: font.sm, color: colors.textSecondary },
 });

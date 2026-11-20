@@ -11,7 +11,7 @@ import { storeLabel } from '@/data/stores';
 import { formatDateTime, formatPercent, formatPrice, formatRelativeDay, formatShortDate } from '@/lib/format';
 import { SOURCE_LABEL } from '@/lib/labels';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 export default function PriceHistory() {
   const router = useRouter();
@@ -131,16 +131,16 @@ export default function PriceHistory() {
 }
 
 const styles = StyleSheet.create({
-  product: { fontSize: font.lg, fontWeight: '800', color: colors.text },
+  product: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.text },
   store: { fontSize: font.sm, color: colors.textSecondary },
-  change: { fontSize: font.sm, color: colors.text, fontWeight: '600' },
-  compareName: { fontSize: font.sm, color: colors.text, fontWeight: '600', flex: 1 },
-  comparePrice: { fontSize: font.md, fontWeight: '800', color: colors.text },
+  change: { fontSize: font.sm, color: colors.text, fontFamily: fonts.semibold },
+  compareName: { fontSize: font.sm, color: colors.text, fontFamily: fonts.semibold, flex: 1 },
+  comparePrice: { fontSize: font.md, fontFamily: fonts.extrabold, color: colors.text },
   barTrack: { height: 8, backgroundColor: colors.bg, borderRadius: 4, overflow: 'hidden' },
   bar: { height: 8, borderRadius: 4 },
   list: { backgroundColor: colors.surface, borderRadius: radius.md, overflow: 'hidden', borderWidth: 1, borderColor: colors.border },
   row: { flexDirection: 'row', alignItems: 'center', padding: spacing.lg, gap: spacing.md },
   rowBorder: { borderTopWidth: 1, borderTopColor: colors.border },
-  date: { fontSize: font.sm, fontWeight: '600', color: colors.text },
-  rowPrice: { fontSize: font.md, fontWeight: '800', color: colors.text },
+  date: { fontSize: font.sm, fontFamily: fonts.semibold, color: colors.text },
+  rowPrice: { fontSize: font.md, fontFamily: fonts.extrabold, color: colors.text },
 });

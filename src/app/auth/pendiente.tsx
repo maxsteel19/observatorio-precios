@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { Badge, Button, Card, Content, Icon, Row, Screen } from '@/components/ui';
 import { useApp } from '@/state/AppState';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 
 export default function Pending() {
   const router = useRouter();
@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { fontSize: font.xl, fontWeight: '800', color: colors.text },
+  title: { fontSize: font.xl, fontFamily: fonts.extrabold, color: colors.text },
   text: { fontSize: font.md, color: colors.textSecondary, textAlign: 'center', lineHeight: 22 },
   row: { justifyContent: 'space-between' },
   key: { fontSize: font.sm, color: colors.textSecondary },
-  value: { fontSize: font.sm, fontWeight: '700', color: colors.text, flexShrink: 1, textAlign: 'right' },
+  value: { fontSize: font.sm, fontFamily: fonts.bold, color: colors.text, flexShrink: 1, textAlign: 'right' },
   tip: { fontSize: font.xs, color: colors.textSecondary, textAlign: 'center' },
 });

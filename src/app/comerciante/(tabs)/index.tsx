@@ -7,7 +7,7 @@ import { LogoutButton } from '@/components/LogoutButton';
 import { Badge, Button, Card, Content, Icon, Row, Screen, SectionTitle, StatBox, type IconName } from '@/components/ui';
 import { formatDateTime, formatPrice, formatRelativeDay } from '@/lib/format';
 import { useApp, useMerchantStores } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 const ACTIONS: { icon: IconName; label: string; href: Href }[] = [
   { icon: 'create-outline', label: 'Ingresar\nprecio', href: '/comerciante/precio' },
@@ -71,6 +71,32 @@ export default function MerchantHome() {
           </View>
         </Card>
 
+        <Card style={{ gap: spacing.md }}>
+          <Row gap={spacing.md} style={{ alignItems: 'flex-start' }}>
+            <View style={styles.supportIcon}>
+              <Icon name="rocket-outline" size={22} color={colors.action} />
+            </View>
+            <View style={{ flex: 1, gap: 4 }}>
+              <Text style={styles.supportTitle}>Apoyo para tu negocio</Text>
+              <Text style={styles.supportText}>
+                Fomento Productivo de la DIDESE ofrece capacitaciones, asesoría y orientación para postular a fondos. También puedes sumarte a la
+                Tarjeta Vecina con un descuento para los vecinos.
+              </Text>
+            </View>
+          </Row>
+          <Row gap={spacing.sm}>
+            <Button small title="Ver apoyo" icon="information-circle-outline" style={{ flex: 1 }} onPress={() => router.push('/acerca')} />
+            <Button
+              small
+              title="Tarjeta Vecina"
+              icon="card-outline"
+              variant="secondary"
+              style={{ flex: 1 }}
+              onPress={() => router.push('/tarjeta-vecina')}
+            />
+          </Row>
+        </Card>
+
         <SectionTitle>Actividad reciente</SectionTitle>
         <View style={styles.list}>
           {activity.map((l, i) => {
@@ -81,7 +107,7 @@ export default function MerchantHome() {
                 <View style={[styles.dot, { backgroundColor: l.source === 'carga' ? colors.info : colors.accent }]} />
                 <View style={{ flex: 1, gap: 2 }}>
                   <Text style={styles.rowText}>
-                    <Text style={{ fontWeight: '700' }}>{product?.name ?? l.productId}</Text> — {formatPrice(l.price)}
+                    <Text style={{ fontFamily: fonts.bold }}>{product?.name ?? l.productId}</Text> — {formatPrice(l.price)}
                     {l.offer ? ' (oferta)' : ''} en {store?.branch ?? store?.name}
                   </Text>
                   <Row gap={6}>
@@ -99,7 +125,10 @@ export default function MerchantHome() {
 }
 
 const styles = StyleSheet.create({
-  hello: { fontSize: font.xl, fontWeight: '800', color: colors.text },
+  supportIcon: { width: 44, height: 44, borderRadius: 15, backgroundColor: colors.actionLight, alignItems: 'center', justifyContent: 'center' },
+  supportTitle: { fontSize: font.md + 1, fontFamily: fonts.extrabold, color: colors.text },
+  supportText: { fontSize: font.sm, color: colors.textSecondary, lineHeight: 19 },
+  hello: { fontSize: font.xl, fontFamily: fonts.extrabold, color: colors.text },
   sub: { fontSize: font.sm, color: colors.textSecondary },
   action: {
     flex: 1,
@@ -119,9 +148,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  actionText: { fontSize: font.sm, fontWeight: '700', color: colors.text, textAlign: 'center' },
+  actionText: { fontSize: font.sm, fontFamily: fonts.bold, color: colors.text, textAlign: 'center' },
   tip: { flexDirection: 'row', gap: spacing.md, backgroundColor: colors.primaryLight, boxShadow: 'none' },
-  tipText: { fontSize: font.sm, color: colors.primaryDark, fontWeight: '600' },
+  tipText: { fontSize: font.sm, color: colors.primaryDark, fontFamily: fonts.semibold },
   list: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   row: { flexDirection: 'row', gap: spacing.md, padding: spacing.md, alignItems: 'flex-start' },
   border: { borderTopWidth: 1, borderTopColor: colors.border },

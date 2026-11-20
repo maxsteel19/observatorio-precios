@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router/tabs';
 
 import { tabIcon } from '@/components/TabIcon';
-import { colors } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 export default function MerchantLayout() {
   return (
@@ -11,7 +11,7 @@ export default function MerchantLayout() {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
+        tabBarLabelStyle: { fontSize: 11, fontFamily: fonts.semibold },
         sceneStyle: { backgroundColor: colors.bg },
       }}>
       <Tabs.Screen

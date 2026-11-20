@@ -13,7 +13,7 @@ import { storeLabel } from '@/data/stores';
 import { parsePrice } from '@/lib/format';
 import { panelHref } from '@/lib/routes';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 type RowData = { key: string; productId: string | null; price: string; confidence?: number };
 
@@ -72,7 +72,7 @@ export default function ConfirmPrices() {
         <Text style={styles.intro}>
           {mode === 'ocr' ? (
             <>
-              Revisa los campos. Los de <Text style={{ fontWeight: '800' }}>baja confianza</Text> están resaltados.
+              Revisa los campos. Los de <Text style={{ fontFamily: fonts.extrabold }}>baja confianza</Text> están resaltados.
             </>
           ) : (
             'Ingresa los precios manualmente. Solo puedes elegir productos del catálogo municipal.'
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: radius.pill,
   },
-  storeText: { color: colors.info, fontWeight: '700', fontSize: font.sm },
+  storeText: { color: colors.info, fontFamily: fonts.bold, fontSize: font.sm },
   intro: { fontSize: font.sm, color: colors.textSecondary, lineHeight: 20 },
   row: {
     backgroundColor: colors.surface,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     minHeight: 44,
   },
-  productText: { fontSize: font.md, fontWeight: '600', color: colors.text, flex: 1 },
+  productText: { fontSize: font.md, fontFamily: fonts.semibold, color: colors.text, flex: 1 },
   priceWrap: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -170,6 +170,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.sm,
     paddingHorizontal: spacing.md,
   },
-  currency: { fontSize: font.lg, fontWeight: '700', color: colors.textSecondary },
-  priceInput: { flex: 1, minHeight: 44, fontSize: font.lg, fontWeight: '700', color: colors.text, paddingHorizontal: spacing.sm },
+  currency: { fontSize: font.lg, fontFamily: fonts.bold, color: colors.textSecondary },
+  priceInput: { flex: 1, minHeight: 44, fontSize: font.lg, fontFamily: fonts.bold, color: colors.text, paddingHorizontal: spacing.sm },
 });

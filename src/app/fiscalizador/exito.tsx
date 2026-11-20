@@ -6,7 +6,7 @@ import { Button, Card, Content, Icon, Screen } from '@/components/ui';
 import { storeLabel } from '@/data/stores';
 import { panelHref } from '@/lib/routes';
 import { useApp } from '@/state/AppState';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 
 export default function Saved() {
   const router = useRouter();
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { fontSize: font.xl, fontWeight: '800', color: colors.text },
+  title: { fontSize: font.xl, fontFamily: fonts.extrabold, color: colors.text },
   text: { fontSize: font.md, color: colors.textSecondary, textAlign: 'center' },
-  count: { fontSize: 40, fontWeight: '800', color: colors.primary },
+  count: { fontSize: 40, fontFamily: fonts.extrabold, color: colors.primary },
 });

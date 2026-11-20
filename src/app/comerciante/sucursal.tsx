@@ -9,7 +9,7 @@ import { useToast } from '@/components/Toast';
 import { Button, Content, Field, Screen, SwitchRow } from '@/components/ui';
 import { CENTER } from '@/data/stores';
 import { useApp } from '@/state/AppState';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 
 export default function BranchForm() {
   const router = useRouter();
@@ -77,6 +77,6 @@ export default function BranchForm() {
 }
 
 const styles = StyleSheet.create({
-  label: { fontSize: font.sm, fontWeight: '600', color: colors.text },
-  error: { color: colors.danger, fontWeight: '700', fontSize: font.sm },
+  label: { fontSize: font.sm, fontFamily: fonts.semibold, color: colors.text },
+  error: { color: colors.danger, fontFamily: fonts.bold, fontSize: font.sm },
 });

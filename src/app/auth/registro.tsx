@@ -8,7 +8,7 @@ import { Button, ChipGroup, Content, Field, Row, Screen } from '@/components/ui'
 import { STORE_TYPES, type StoreType } from '@/data/stores';
 import { formatRut, isValidRut } from '@/lib/rut';
 import { useApp } from '@/state/AppState';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 
 type Errors = Partial<Record<string, string>>;
 
@@ -169,10 +169,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   stepActive: { backgroundColor: colors.primary },
-  stepText: { color: colors.white, fontWeight: '800' },
+  stepText: { color: colors.white, fontFamily: fonts.extrabold },
   stepLine: { width: 64, height: 3, backgroundColor: colors.border, marginHorizontal: spacing.sm, borderRadius: 2 },
-  title: { fontSize: font.xl, fontWeight: '800', color: colors.text },
+  title: { fontSize: font.xl, fontFamily: fonts.extrabold, color: colors.text },
   text: { fontSize: font.sm, color: colors.textSecondary, marginTop: 2 },
-  label: { fontSize: font.sm, fontWeight: '600', color: colors.text },
-  error: { fontSize: font.xs, color: colors.danger, fontWeight: '600' },
+  label: { fontSize: font.sm, fontFamily: fonts.semibold, color: colors.text },
+  error: { fontSize: font.xs, color: colors.danger, fontFamily: fonts.semibold },
 });

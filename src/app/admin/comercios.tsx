@@ -7,7 +7,7 @@ import { Badge, Button, ChipGroup, EmptyState, SearchBox } from '@/components/ui
 import { STORE_TYPES, storeLabel, storeTypeLabel, type StoreType } from '@/data/stores';
 import { normalize } from '@/lib/format';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 export default function StoresAdmin() {
   const { stores, prices, toggleStore } = useApp();
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
   list: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   row: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.sm, padding: spacing.md },
   border: { borderTopWidth: 1, borderTopColor: colors.border },
-  name: { fontSize: font.md, fontWeight: '700', color: colors.text },
+  name: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text },
   meta: { fontSize: font.xs, color: colors.textSecondary },
 });

@@ -10,7 +10,7 @@ import { Button, Card, ChipGroup, Content, Field, Icon, Row, Screen, SwitchRow }
 import { productLabel } from '@/data/catalog';
 import { formatPrice, formatRelativeDay, parsePrice } from '@/lib/format';
 import { useApp, useMerchantStores } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 export default function EnterPrice() {
   const toast = useToast();
@@ -70,7 +70,7 @@ export default function EnterPrice() {
           <Card style={styles.current}>
             <Icon name="information-circle-outline" size={18} color={colors.primaryDark} />
             <Text style={styles.currentText}>
-              Precio publicado: <Text style={{ fontWeight: '800' }}>{formatPrice(current.price)}</Text>
+              Precio publicado: <Text style={{ fontFamily: fonts.extrabold }}>{formatPrice(current.price)}</Text>
               {current.offer ? ' (oferta)' : ''} · actualizado {formatRelativeDay(current.updatedAt)}
             </Text>
           </Card>
@@ -102,7 +102,7 @@ export default function EnterPrice() {
 }
 
 const styles = StyleSheet.create({
-  label: { fontSize: font.sm, fontWeight: '600', color: colors.text },
+  label: { fontSize: font.sm, fontFamily: fonts.semibold, color: colors.text },
   select: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -118,5 +118,5 @@ const styles = StyleSheet.create({
   hint: { fontSize: font.xs, color: colors.textSecondary },
   current: { flexDirection: 'row', gap: spacing.sm, backgroundColor: colors.primaryLight, padding: spacing.md, boxShadow: 'none' },
   currentText: { flex: 1, fontSize: font.sm, color: colors.primaryDark },
-  error: { color: colors.danger, fontWeight: '700', fontSize: font.sm },
+  error: { color: colors.danger, fontFamily: fonts.bold, fontSize: font.sm },
 });

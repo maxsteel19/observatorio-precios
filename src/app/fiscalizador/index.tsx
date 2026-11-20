@@ -8,7 +8,7 @@ import { Badge, Button, Card, Content, Icon, Row, Screen, SectionTitle } from '@
 import { storeLabel } from '@/data/stores';
 import { daysBetween, formatDateTime } from '@/lib/format';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 export default function InspectorHome() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function InspectorHome() {
         </View>
 
         <Row gap={spacing.md}>
-          <Button title="Nueva captura" icon="camera" style={{ flex: 1 }} onPress={() => router.push('/fiscalizador/comercios')} />
+          <Button title="Nueva captura" icon="camera" style={{ flex: 1.15 }} onPress={() => router.push('/fiscalizador/comercios')} />
           <Button title="Historial" icon="time-outline" variant="secondary" style={{ flex: 1 }} onPress={() => router.push('/fiscalizador/historial')} />
         </Row>
 
@@ -73,12 +73,12 @@ export default function InspectorHome() {
 
 const styles = StyleSheet.create({
   hero: { backgroundColor: colors.info, borderRadius: radius.lg, padding: spacing.lg, gap: spacing.sm },
-  hello: { color: 'rgba(255,255,255,0.85)', fontSize: font.sm, fontWeight: '600' },
-  heroTitle: { color: colors.white, fontSize: font.xl, fontWeight: '800' },
+  hello: { color: 'rgba(255,255,255,0.85)', fontSize: font.sm, fontFamily: fonts.semibold },
+  heroTitle: { color: colors.white, fontSize: font.xl, fontFamily: fonts.extrabold },
   heroStat: { flex: 1, backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: radius.md, padding: spacing.md },
-  heroValue: { color: colors.white, fontSize: 32, fontWeight: '800' },
-  heroLabel: { color: 'rgba(255,255,255,0.9)', fontSize: font.xs, fontWeight: '600' },
-  store: { fontSize: font.md, fontWeight: '700', color: colors.text, flexShrink: 1 },
+  heroValue: { color: colors.white, fontSize: 32, fontFamily: fonts.extrabold },
+  heroLabel: { color: 'rgba(255,255,255,0.9)', fontSize: font.xs, fontFamily: fonts.semibold },
+  store: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text, flexShrink: 1 },
   time: { fontSize: font.xs, color: colors.textSecondary },
   products: { fontSize: font.sm, color: colors.textSecondary },
 });

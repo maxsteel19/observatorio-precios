@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 /** Panel inferior (bottom sheet) simple, basado en Modal. */
 export function Sheet({
@@ -56,6 +56,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: spacing.md,
   },
-  title: { fontSize: font.lg, fontWeight: '800', color: colors.text, marginBottom: spacing.md },
+  title: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.text, marginBottom: spacing.md },
   footer: { flexDirection: 'row', gap: spacing.md, marginTop: spacing.lg },
 });

@@ -7,7 +7,7 @@ import { Badge, Button, Card, EmptyState, Row } from '@/components/ui';
 import { storeTypeLabel } from '@/data/stores';
 import { formatDateTime } from '@/lib/format';
 import { useApp } from '@/state/AppState';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 
 export default function PendingAccounts() {
   const toast = useToast();
@@ -80,10 +80,10 @@ function Detail({ label, value }: { label: string; value: string }) {
 const styles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
   card: { flexGrow: 1, flexBasis: 320, gap: spacing.md },
-  name: { fontSize: font.lg, fontWeight: '800', color: colors.text },
+  name: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.text },
   meta: { fontSize: font.xs, color: colors.textSecondary },
   details: { gap: spacing.sm },
   detail: { gap: 1 },
-  detailLabel: { fontSize: font.xs, color: colors.textSecondary, fontWeight: '600' },
+  detailLabel: { fontSize: font.xs, color: colors.textSecondary, fontFamily: fonts.semibold },
   detailValue: { fontSize: font.sm, color: colors.text },
 });

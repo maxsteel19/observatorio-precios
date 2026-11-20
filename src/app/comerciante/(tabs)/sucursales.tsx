@@ -8,7 +8,7 @@ import { LogoutButton } from '@/components/LogoutButton';
 import { useToast } from '@/components/Toast';
 import { Badge, Button, Card, Content, Icon, Row, Screen } from '@/components/ui';
 import { useApp, useMerchantStores } from '@/state/AppState';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 
 export default function Branches() {
   const router = useRouter();
@@ -76,8 +76,8 @@ export default function Branches() {
 }
 
 const styles = StyleSheet.create({
-  name: { fontSize: font.lg, fontWeight: '800', color: colors.text },
+  name: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.text },
   meta: { fontSize: font.sm, color: colors.textSecondary, flex: 1 },
-  count: { fontSize: font.xs, color: colors.primaryDark, fontWeight: '700' },
+  count: { fontSize: font.xs, color: colors.primaryDark, fontFamily: fonts.bold },
   actions: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.xs },
 });

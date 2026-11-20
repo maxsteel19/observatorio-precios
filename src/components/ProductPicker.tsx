@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { categoryLabel, productLabel } from '@/data/catalog';
 import { normalize } from '@/lib/format';
 import { useApp } from '@/state/AppState';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 import { Sheet } from './Sheet';
 import { EmptyState, Icon, SearchBox } from './ui';
 
@@ -56,6 +56,6 @@ export function ProductPicker({
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', paddingVertical: spacing.md, gap: spacing.md },
   border: { borderTopWidth: 1, borderTopColor: colors.border },
-  name: { fontSize: font.md, fontWeight: '600', color: colors.text },
+  name: { fontSize: font.md, fontFamily: fonts.semibold, color: colors.text },
   cat: { fontSize: font.xs, color: colors.textSecondary },
 });

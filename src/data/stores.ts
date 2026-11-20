@@ -33,6 +33,8 @@ export type Store = {
   map: { x: number; y: number };
   /** Nombre del comercio dueño (cuenta de comerciante), si tiene una. */
   merchant?: string;
+  /** Beneficio para quienes muestran la Tarjeta Vecina PAC (convenio de ejemplo). */
+  tarjetaVecina?: string;
   active: boolean;
 };
 
@@ -51,6 +53,7 @@ export const INITIAL_STORES: Store[] = [
     lng: -70.6742,
     type: 'almacen',
     map: { x: 25, y: 30 },
+    tarjetaVecina: '5% de descuento en abarrotes',
     active: true,
   },
   {
@@ -85,6 +88,7 @@ export const INITIAL_STORES: Store[] = [
     lng: -70.6725,
     type: 'almacen',
     map: { x: 35, y: 62 },
+    tarjetaVecina: '10% de descuento en pan y lácteos',
     active: true,
   },
   {
@@ -108,6 +112,7 @@ export const INITIAL_STORES: Store[] = [
     lng: -70.6832,
     type: 'feria',
     map: { x: 20, y: 78 },
+    tarjetaVecina: '8% de descuento en frutas y verduras',
     active: true,
   },
   {
@@ -121,6 +126,7 @@ export const INITIAL_STORES: Store[] = [
     lng: -70.676,
     type: 'minimarket',
     map: { x: 54, y: 72 },
+    tarjetaVecina: '5% de descuento en toda la compra',
     merchant: DEMO_MERCHANT,
     active: true,
   },
@@ -135,6 +141,7 @@ export const INITIAL_STORES: Store[] = [
     lng: -70.68,
     type: 'minimarket',
     map: { x: 88, y: 62 },
+    tarjetaVecina: '5% de descuento en toda la compra',
     merchant: DEMO_MERCHANT,
     active: true,
   },

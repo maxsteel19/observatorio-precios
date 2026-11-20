@@ -8,7 +8,7 @@ import { useToast } from '@/components/Toast';
 import { Button, Card, Content, Field, Icon, Screen, SectionTitle } from '@/components/ui';
 import { storeLabel } from '@/data/stores';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 const REASONS = [
   'El precio mostrado es más alto',
@@ -91,7 +91,7 @@ export default function Report() {
 
 const styles = StyleSheet.create({
   info: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  store: { fontSize: font.md, fontWeight: '700', color: colors.text },
+  store: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text },
   meta: { fontSize: font.sm, color: colors.textSecondary },
   options: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   option: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg },

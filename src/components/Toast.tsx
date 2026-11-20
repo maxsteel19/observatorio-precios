@@ -3,7 +3,7 @@ import { createContext, useContext, useRef, useState, type ReactNode } from 'rea
 import { Animated, StyleSheet, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, font, radius, shadow, spacing } from '@/theme';
+import { colors, fonts, font, radius, shadow, spacing } from '@/theme';
 
 type ToastType = 'success' | 'error' | 'info';
 
@@ -61,5 +61,5 @@ const styles = StyleSheet.create({
     ...shadow.raised,
     pointerEvents: 'none',
   },
-  text: { color: colors.white, fontSize: font.sm, fontWeight: '600', flexShrink: 1 },
+  text: { color: colors.white, fontSize: font.sm, fontFamily: fonts.semibold, flexShrink: 1 },
 });

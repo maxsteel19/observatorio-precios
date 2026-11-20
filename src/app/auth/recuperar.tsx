@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { useToast } from '@/components/Toast';
 import { Button, Content, Field, Icon, Screen } from '@/components/ui';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 
 export default function RecoverPassword() {
   const router = useRouter();
@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { fontSize: font.xl, fontWeight: '800', color: colors.text },
+  title: { fontSize: font.xl, fontFamily: fonts.extrabold, color: colors.text },
   text: { fontSize: font.md, color: colors.textSecondary, textAlign: 'center' },
 });

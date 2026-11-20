@@ -3,7 +3,7 @@ import { useWindowDimensions } from 'react-native';
 
 import { tabIcon as icon } from '@/components/TabIcon';
 import { useApp } from '@/state/AppState';
-import { colors } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 export default function AdminLayout() {
   const { width } = useWindowDimensions();
@@ -24,7 +24,7 @@ export default function AdminLayout() {
           ? { backgroundColor: colors.surface, borderRightColor: colors.border, width: 230, paddingTop: 12 }
           : { backgroundColor: colors.surface, borderTopColor: colors.border },
         tabBarItemStyle: wide ? { borderRadius: 10, marginHorizontal: 10, marginVertical: 2, maxHeight: 48 } : undefined,
-        tabBarLabelStyle: { fontSize: wide ? 14 : 10, fontWeight: '600' },
+        tabBarLabelStyle: { fontSize: wide ? 14 : 10, fontFamily: fonts.semibold },
         sceneStyle: { backgroundColor: colors.bg },
       }}>
       <Tabs.Screen name="index" options={{ title: 'Panel', tabBarIcon: icon('grid-outline') }} />

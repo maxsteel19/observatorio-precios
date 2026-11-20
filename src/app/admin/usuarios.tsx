@@ -8,7 +8,7 @@ import { useToast } from '@/components/Toast';
 import { Avatar, Badge, Button, ChipGroup, EmptyState, Field, SearchBox } from '@/components/ui';
 import { normalize } from '@/lib/format';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, roleInfo, spacing, type Role } from '@/theme';
+import { colors, fonts, font, radius, roleInfo, spacing, type Role } from '@/theme';
 
 const STAFF_ROLES: Role[] = ['admin', 'fiscalizador', 'comerciante'];
 
@@ -109,9 +109,9 @@ const styles = StyleSheet.create({
   list: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   row: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.sm, padding: spacing.md },
   border: { borderTopWidth: 1, borderTopColor: colors.border },
-  name: { fontSize: font.md, fontWeight: '700', color: colors.text },
+  name: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text },
   meta: { fontSize: font.xs, color: colors.textSecondary },
   rolePill: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: radius.pill },
-  roleText: { fontSize: font.xs, fontWeight: '700' },
-  label: { fontSize: font.sm, fontWeight: '600', color: colors.text },
+  roleText: { fontSize: font.xs, fontFamily: fonts.bold },
+  label: { fontSize: font.sm, fontFamily: fonts.semibold, color: colors.text },
 });

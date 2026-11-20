@@ -3,13 +3,40 @@
 
 export type Category = 'abarrotes' | 'lacteos' | 'panaderia' | 'carnes' | 'frutas';
 
-export const CATEGORIES: { id: Category; label: string; color: string }[] = [
-  { id: 'abarrotes', label: 'Abarrotes', color: '#0D7377' },
-  { id: 'lacteos', label: 'Lácteos y huevos', color: '#1565C0' },
-  { id: 'panaderia', label: 'Panadería', color: '#B26A00' },
-  { id: 'carnes', label: 'Carnes', color: '#C62828' },
-  { id: 'frutas', label: 'Frutas y verduras', color: '#2E7D32' },
+// Colores tomados del logo municipal; `tint` es el fondo suave de los mosaicos.
+export const CATEGORIES: { id: Category; label: string; short: string; emoji: string; color: string; tint: string }[] = [
+  { id: 'abarrotes', label: 'Abarrotes', short: 'Abarrotes', emoji: '🍚', color: '#124280', tint: '#E8EFF8' },
+  { id: 'lacteos', label: 'Lácteos y huevos', short: 'Lácteos', emoji: '🥛', color: '#1E9BD7', tint: '#E4F4FC' },
+  { id: 'panaderia', label: 'Panadería', short: 'Panadería', emoji: '🥖', color: '#D9930F', tint: '#FFF6DC' },
+  { id: 'carnes', label: 'Carnes', short: 'Carnes', emoji: '🍗', color: '#D52B34', tint: '#FDECEC' },
+  { id: 'frutas', label: 'Frutas y verduras', short: 'Verduras', emoji: '🥕', color: '#5E9A1E', tint: '#EEF6E3' },
 ];
+
+const PRODUCT_EMOJI: Record<string, string> = {
+  arroz: '🍚',
+  aceite: '🌻',
+  azucar: '🍬',
+  harina: '🌾',
+  fideos: '🍝',
+  leche: '🥛',
+  huevos: '🥚',
+  pan: '🥖',
+  pollo: '🍗',
+  carne: '🥩',
+  tomate: '🍅',
+  papa: '🥔',
+  cebolla: '🧅',
+  zanahoria: '🥕',
+};
+
+/** Ilustración del producto (emoji). Los productos nuevos usan el de su categoría. */
+export function productEmoji(product: Pick<Product, 'id' | 'category'>) {
+  return PRODUCT_EMOJI[product.id] ?? CATEGORIES.find((c) => c.id === product.category)?.emoji ?? '🛒';
+}
+
+export function categoryTint(category: Category) {
+  return CATEGORIES.find((c) => c.id === category)?.tint ?? '#EFF2F7';
+}
 
 export const UNITS = ['1 kg', 'kg', '1 L', '400 g', '12 un', 'unidad'] as const;
 

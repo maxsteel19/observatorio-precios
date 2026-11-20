@@ -14,6 +14,9 @@ export function panelHref(path: PanelPath): Href {
   return path as unknown as Href;
 }
 
+/** Lista de especiales de temporada (`src/app/especiales/index.tsx`), con el mismo arreglo de tipos. */
+export const SPECIALS_HREF = '/especiales' as unknown as Href;
+
 /** Pantalla de inicio de cada perfil con sesión. */
 export function panelRoute(role: StaffRole): Href {
   return panelHref(role === 'admin' ? '/admin' : role === 'fiscalizador' ? '/fiscalizador' : '/comerciante');

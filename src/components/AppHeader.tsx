@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, font, radius, roleInfo, spacing, type Role } from '@/theme';
+import { colors, fonts, font, radius, roleInfo, spacing, type Role } from '@/theme';
 import { IconButton } from './ui';
 
 export function AppHeader({
@@ -53,22 +53,28 @@ export function AppHeader({
 }
 
 const styles = StyleSheet.create({
-  header: { backgroundColor: colors.primary },
+  header: {
+    backgroundColor: colors.primary,
+    borderBottomLeftRadius: radius.lg,
+    borderBottomRightRadius: radius.lg,
+    boxShadow: '0 6px 16px rgba(11, 46, 94, 0.18)',
+    zIndex: 2,
+  },
   bar: {
-    height: 56,
+    height: 58,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: spacing.xs,
     gap: spacing.xs,
   },
   titleWrap: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: spacing.sm, minWidth: 0 },
-  title: { color: colors.white, fontSize: font.lg, fontWeight: '700', flexShrink: 1 },
+  title: { color: colors.white, fontSize: font.lg + 1, fontFamily: fonts.extrabold, letterSpacing: -0.2, flexShrink: 1 },
   roleChip: {
     backgroundColor: 'rgba(255,255,255,0.18)',
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: radius.pill,
   },
-  roleText: { color: colors.white, fontSize: font.xs, fontWeight: '700' },
+  roleText: { color: colors.white, fontSize: font.xs, fontFamily: fonts.bold },
   right: { flexDirection: 'row', alignItems: 'center', paddingRight: spacing.sm, gap: spacing.xs },
 });

@@ -8,7 +8,7 @@ import { Badge, ChipGroup, Content, EmptyState, Row, Screen } from '@/components
 import { productLabel } from '@/data/catalog';
 import { formatDateTime, formatPrice } from '@/lib/format';
 import { useApp, useMerchantStores } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 type SourceFilter = 'all' | 'comerciante' | 'carga';
 
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   list: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   row: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.md },
   border: { borderTopWidth: 1, borderTopColor: colors.border },
-  product: { fontSize: font.md, fontWeight: '700', color: colors.text },
+  product: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text },
   meta: { fontSize: font.xs, color: colors.textSecondary },
-  price: { fontSize: font.lg, fontWeight: '800', color: colors.text },
+  price: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.text },
 });

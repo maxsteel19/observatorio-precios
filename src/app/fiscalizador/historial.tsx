@@ -8,7 +8,7 @@ import { storeLabel } from '@/data/stores';
 import { daysBetween, formatRelativeDay, formatShortDate, formatTime } from '@/lib/format';
 import { panelHref } from '@/lib/routes';
 import { useApp } from '@/state/AppState';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 
 type Period = 'all' | 'today' | 'week' | 'month';
 
@@ -83,7 +83,7 @@ export default function InspectorHistory() {
 
 const styles = StyleSheet.create({
   summary: { fontSize: font.sm, color: colors.textSecondary },
-  store: { fontSize: font.md, fontWeight: '700', color: colors.text, flex: 1 },
-  time: { fontSize: font.sm, color: colors.textSecondary, fontWeight: '600' },
+  store: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text, flex: 1 },
+  time: { fontSize: font.sm, color: colors.textSecondary, fontFamily: fonts.semibold },
   products: { fontSize: font.sm, color: colors.textSecondary },
 });

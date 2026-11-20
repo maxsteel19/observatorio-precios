@@ -1,11 +1,12 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import { panelRoute } from '@/lib/routes';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius } from '@/theme';
+import { colors, fonts, font, radius } from '@/theme';
 
-/** Botón "Iniciar sesión" del encabezado del ciudadano (o "Mi panel" si ya hay sesión). */
+/** Botón "Ingresar" del encabezado del ciudadano (o "Mi panel" si ya hay sesión). */
 export function HeaderLoginButton() {
   const router = useRouter();
   const { session } = useApp();
@@ -16,19 +17,28 @@ export function HeaderLoginButton() {
   };
 
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.btn, pressed && { opacity: 0.7 }]}>
-      <Text style={styles.text}>{session ? 'Mi panel' : 'Iniciar sesión'}</Text>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={session ? 'Ir a mi panel' : 'Iniciar sesión'}
+      onPress={onPress}
+      style={({ pressed }) => [styles.btn, pressed && { opacity: 0.8 }]}>
+      <Ionicons name={session ? 'grid-outline' : 'person-circle-outline'} size={18} color={colors.primary} />
+      <Text style={styles.text}>{session ? 'Mi panel' : 'Ingresar'}</Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   btn: {
-    borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.7)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: colors.white,
     borderRadius: radius.pill,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingLeft: 9,
+    paddingRight: 13,
+    paddingVertical: 7,
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.14)',
   },
-  text: { color: colors.white, fontSize: font.sm, fontWeight: '700' },
+  text: { color: colors.primary, fontSize: font.sm, fontFamily: fonts.bold },
 });

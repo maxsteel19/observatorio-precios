@@ -6,7 +6,7 @@ Incluye los 5 flujos del mockup:
 
 | Perfil | Qué puede hacer |
 |---|---|
-| **Ciudadano** (sin cuenta) | Buscar productos (incluye búsqueda semántica: «ingredientes para cazuela»), ver resultados en lista o mapa, filtrar y ordenar, ver la ficha del comercio, el historial de precios con gráfico, comparar entre comercios y reportar precios incorrectos. |
+| **Ciudadano** (sin cuenta) | Buscar productos (incluye búsqueda semántica: «ingredientes para cazuela»), ver resultados en lista o mapa, filtrar y ordenar, ver la ficha del comercio, el historial de precios con gráfico, comparar entre comercios y reportar precios incorrectos. Además: **bencinas** (93, 95, 97, diésel y parafina por estación), **Tarjeta Vecina PAC** (requisitos, beneficios y comercios con convenio), **especiales de temporada** (Navidad, útiles escolares, Halloween, Fiestas Patrias) y **Acerca del observatorio** (DIDESE, Fomento Productivo y contacto). |
 | **Fiscalizador** | Resumen del día, seleccionar comercio, capturar la pizarra de precios (OCR simulado), confirmar los valores según su confianza, ingreso manual e historial de capturas. |
 | **Comerciante** | Panel con indicadores, ingresar precios y ofertas (solo productos del catálogo municipal), carga masiva desde CSV (simulada), gestionar sucursales con ubicación en el mapa e historial. |
 | **Administrador** | Dashboard con KPIs y evolución de precios por categoría, catálogo de productos, comercios, aprobación de cuentas de comerciantes, usuarios y roles, y log de auditoría. En pantallas anchas usa una barra lateral. |
@@ -42,7 +42,7 @@ En la pantalla de acceso hay botones de **acceso directo demo** (Administrador, 
 
 1. **Ciudadano:** toca la sugerencia «Ingredientes para cazuela baratos» → muestra el banner de búsqueda semántica, la etiqueta «Más barato» y cambia a **Mapa**.
 2. Abre un comercio → toca un producto → muestra el **gráfico de historial** (toca los puntos) y «Compara en otros comercios».
-3. **Fiscalizador:** Iniciar sesión → Fiscalizador → Nueva captura → elige un comercio → **Capturar** → revisa los campos de baja confianza → Confirmar → «Ver en la app ciudadana»: los precios ya están publicados.
+3. **Fiscalizador:** Ingresar → Fiscalizador → Nueva captura → elige un comercio → **Capturar** → revisa los campos de baja confianza → Confirmar → «Ver en la app ciudadana»: los precios ya están publicados.
 4. **Comerciante:** ingresa una oferta y muéstrala en la app ciudadana.
 5. **Registro + Administrador:** registra un comercio nuevo → entra como Administrador → **Cuentas** → apruébalo → revisa la **Auditoría**.
 
@@ -82,7 +82,12 @@ npx expo-doctor     # diagnostica dependencias y configuración
 - **Backend con Supabase:** tablas `productos`, `comercios`, `precios`, `usuarios`, `auditoria`; login con Supabase Auth y permisos por rol con Row Level Security. Solo hay que reemplazar las acciones de `src/state/AppState.tsx`.
 - **Cámara y OCR reales:** `expo-camera` para la captura y un servicio de OCR/IA para leer la pizarra.
 - **APK para la feria:** `npx eas-cli@latest build -p android --profile preview` genera un APK instalable sin Android Studio.
-- **Ícono y pantalla de inicio propios** en `assets/images/` (hoy son los de Expo).
+
+## Diseño
+
+- **Logo e ícono:** el ícono de la app, la pantalla de carga y el logo interno se generaron desde `assets/images/logo-municipal-original.jpg`, con fondo azul sólido `#124280`, bordes limpios y mayor resolución.
+- **Paleta:** tomada del logo municipal, en `src/theme.ts`: azul institucional para la estructura, verde para las acciones, naranja para las ofertas, y amarillo, celeste y rojo como acentos.
+- **Tipografía:** Plus Jakarta Sans (`@expo-google-fonts/plus-jakarta-sans`) para títulos, precios y botones.
 
 ## Nota técnica (Windows)
 

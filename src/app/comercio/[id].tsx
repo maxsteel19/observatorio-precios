@@ -12,7 +12,7 @@ import { formatDistance, formatPrice, formatRelativeDay } from '@/lib/format';
 import { SOURCE_LABEL } from '@/lib/labels';
 import { distanceFromUser } from '@/lib/search';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 export default function StoreDetail() {
   const router = useRouter();
@@ -75,6 +75,21 @@ export default function StoreDetail() {
           )}
         </Card>
 
+        {store.tarjetaVecina && (
+          <Pressable
+            onPress={() => router.push('/tarjeta-vecina')}
+            style={({ pressed }) => [styles.tarjeta, pressed && { opacity: 0.85 }]}>
+            <View style={styles.tarjetaIcon}>
+              <Icon name="card" size={20} color={colors.white} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tarjetaTitle}>Convenio Tarjeta Vecina PAC</Text>
+              <Text style={styles.tarjetaText}>{store.tarjetaVecina}</Text>
+            </View>
+            <Icon name="chevron-forward" size={18} color={colors.primary} />
+          </Pressable>
+        )}
+
         <Row gap={spacing.md}>
           <Button title="Cómo llegar" icon="navigate" style={{ flex: 1.5 }} onPress={openDirections} />
           <Button
@@ -122,15 +137,26 @@ export default function StoreDetail() {
 }
 
 const styles = StyleSheet.create({
-  name: { fontSize: font.xl, fontWeight: '800', color: colors.text },
-  branch: { fontSize: font.sm, color: colors.textSecondary, fontWeight: '600' },
+  tarjeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    backgroundColor: colors.primaryLight,
+    borderRadius: radius.lg,
+    padding: spacing.md,
+  },
+  tarjetaIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
+  tarjetaTitle: { fontSize: font.sm, fontFamily: fonts.extrabold, color: colors.primaryDark },
+  tarjetaText: { fontSize: font.sm, color: colors.primaryDark, fontFamily: fonts.medium },
+  name: { fontSize: font.xl, fontFamily: fonts.extrabold, color: colors.text },
+  branch: { fontSize: font.sm, color: colors.textSecondary, fontFamily: fonts.semibold },
   info: { fontSize: font.sm, color: colors.textSecondary, flex: 1 },
   list: { backgroundColor: colors.surface, borderRadius: radius.md, overflow: 'hidden', borderWidth: 1, borderColor: colors.border },
   row: { flexDirection: 'row', alignItems: 'center', padding: spacing.lg, gap: spacing.md },
   rowBorder: { borderTopWidth: 1, borderTopColor: colors.border },
   highlight: { backgroundColor: colors.primaryLight },
-  product: { fontSize: font.md, fontWeight: '600', color: colors.text },
+  product: { fontSize: font.md, fontFamily: fonts.semibold, color: colors.text },
   meta: { fontSize: font.xs, color: colors.textSecondary },
-  price: { fontSize: font.lg, fontWeight: '800', color: colors.primary },
+  price: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.primary },
   link: { fontSize: font.xs, color: colors.textSecondary },
 });

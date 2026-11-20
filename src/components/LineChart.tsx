@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Defs, Line, LinearGradient, Path, Rect, Stop, Text as SvgText } from 'react-native-svg';
 
 import { formatPrice } from '@/lib/format';
-import { colors, font, spacing } from '@/theme';
+import { colors, fonts, font, spacing } from '@/theme';
 
 export type ChartSeries = { name?: string; color: string; values: number[] };
 
@@ -127,7 +127,7 @@ export function LineChart({
             <View key={s.name} style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: s.color }]} />
               <Text style={styles.legendText}>
-                {s.name} <Text style={{ fontWeight: '800', color: colors.text }}>{formatY(s.values[active]!)}</Text>
+                {s.name} <Text style={{ fontFamily: fonts.extrabold, color: colors.text }}>{formatY(s.values[active]!)}</Text>
               </Text>
             </View>
           ))}

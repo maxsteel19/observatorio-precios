@@ -8,7 +8,7 @@ import { Badge, Button, Card, ChipGroup, Content, Icon, Row, Screen, StatBox } f
 import { normalize, formatPrice } from '@/lib/format';
 import { panelHref } from '@/lib/routes';
 import { useApp, useMerchantStores } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 /** Contenido del archivo de ejemplo "precios_semana.csv". */
 const SAMPLE_ROWS: { producto: string; precio: string }[] = [
@@ -70,7 +70,7 @@ export default function BulkUpload() {
         <Card style={styles.info}>
           <Icon name="document-text-outline" size={20} color={colors.primaryDark} />
           <Text style={styles.infoText}>
-            Sube un Excel o CSV con columnas <Text style={{ fontWeight: '800' }}>producto, precio</Text> (opcional: oferta, vigencia). Los
+            Sube un Excel o CSV con columnas <Text style={{ fontFamily: fonts.extrabold }}>producto, precio</Text> (opcional: oferta, vigencia). Los
             productos deben existir en el catálogo municipal.
           </Text>
         </Card>
@@ -143,7 +143,7 @@ export default function BulkUpload() {
 const styles = StyleSheet.create({
   info: { flexDirection: 'row', gap: spacing.md, backgroundColor: colors.primaryLight, boxShadow: 'none' },
   infoText: { flex: 1, fontSize: font.sm, color: colors.primaryDark, lineHeight: 19 },
-  label: { fontSize: font.sm, fontWeight: '600', color: colors.text },
+  label: { fontSize: font.sm, fontFamily: fonts.semibold, color: colors.text },
   drop: {
     borderWidth: 2,
     borderStyle: 'dashed',
@@ -154,12 +154,12 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     backgroundColor: colors.surface,
   },
-  dropTitle: { fontSize: font.lg, fontWeight: '800', color: colors.text },
+  dropTitle: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.text },
   dropText: { fontSize: font.sm, color: colors.textSecondary, textAlign: 'center' },
   table: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   tr: { flexDirection: 'row', alignItems: 'center', borderTopWidth: 1, borderTopColor: colors.border, paddingHorizontal: spacing.sm },
   th: { backgroundColor: colors.bg, borderTopWidth: 0 },
-  thText: { fontWeight: '800', color: colors.textSecondary, fontSize: font.xs },
+  thText: { fontFamily: fonts.extrabold, color: colors.textSecondary, fontSize: font.xs },
   cell: { paddingVertical: spacing.sm, paddingHorizontal: 4, fontSize: font.sm, color: colors.text },
-  doneCount: { fontSize: 40, fontWeight: '800', color: colors.primary },
+  doneCount: { fontSize: 40, fontFamily: fonts.extrabold, color: colors.primary },
 });

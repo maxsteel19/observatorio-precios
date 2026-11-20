@@ -9,7 +9,7 @@ import { Badge, Button, ChipGroup, EmptyState, Field, SearchBox } from '@/compon
 import { CATEGORIES, UNITS, categoryLabel, type Category } from '@/data/catalog';
 import { normalize } from '@/lib/format';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 export default function CatalogAdmin() {
   const toast = useToast();
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   list: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   row: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.sm, padding: spacing.md },
   border: { borderTopWidth: 1, borderTopColor: colors.border },
-  name: { fontSize: font.md, fontWeight: '700', color: colors.text },
+  name: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text },
   meta: { fontSize: font.xs, color: colors.textSecondary },
-  label: { fontSize: font.sm, fontWeight: '600', color: colors.text },
+  label: { fontSize: font.sm, fontFamily: fonts.semibold, color: colors.text },
 });

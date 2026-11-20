@@ -7,7 +7,7 @@ import { Badge, ChipGroup, EmptyState, Icon } from '@/components/ui';
 import type { AuditEntry } from '@/data/seed';
 import { formatDateTime } from '@/lib/format';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 const TABLES: AuditEntry['table'][] = ['precios', 'productos', 'comercios', 'usuarios', 'solicitudes', 'reportes'];
 
@@ -57,11 +57,11 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderRadius: radius.md,
   },
-  bannerText: { color: colors.info, fontWeight: '700', fontSize: font.sm, flex: 1 },
+  bannerText: { color: colors.info, fontFamily: fonts.bold, fontSize: font.sm, flex: 1 },
   list: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   row: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.sm, padding: spacing.md },
   border: { borderTopWidth: 1, borderTopColor: colors.border },
   date: { fontSize: font.xs, color: colors.textSecondary, width: 96 },
-  user: { fontSize: font.sm, fontWeight: '700', color: colors.text, minWidth: 110 },
+  user: { fontSize: font.sm, fontFamily: fonts.bold, color: colors.text, minWidth: 110 },
   detail: { fontSize: font.sm, color: colors.text, flex: 1, minWidth: 200 },
 });

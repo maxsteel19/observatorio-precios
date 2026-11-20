@@ -10,7 +10,7 @@ import { formatDistance, normalize } from '@/lib/format';
 import { distanceFromUser } from '@/lib/search';
 import { panelHref } from '@/lib/routes';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 export default function SelectStore() {
   const router = useRouter();
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   list: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   row: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.md },
   border: { borderTopWidth: 1, borderTopColor: colors.border },
-  name: { fontSize: font.md, fontWeight: '700', color: colors.text },
+  name: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text },
   meta: { fontSize: font.xs, color: colors.textSecondary },
-  distance: { fontSize: font.sm, color: colors.textSecondary, fontWeight: '600' },
+  distance: { fontSize: font.sm, color: colors.textSecondary, fontFamily: fonts.semibold },
 });

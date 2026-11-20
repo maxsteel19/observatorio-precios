@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import { useApp } from '@/state/AppState';
-import { colors, font, radius } from '@/theme';
+import { colors, fonts, font, radius } from '@/theme';
 import { Icon } from './ui';
 
 /** Cierra la sesión. Las rutas protegidas devuelven al inicio automáticamente. */
@@ -29,5 +29,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
-  text: { color: colors.white, fontSize: font.sm, fontWeight: '700' },
+  text: { color: colors.white, fontSize: font.sm, fontFamily: fonts.bold },
 });

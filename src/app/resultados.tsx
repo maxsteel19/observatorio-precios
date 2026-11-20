@@ -13,7 +13,7 @@ import { storeLabel } from '@/data/stores';
 import { formatDistance, formatPrice, formatRelativeDay } from '@/lib/format';
 import { DEFAULT_FILTERS, interpretQuery, runSearch, type SearchFilters, type SortKey } from '@/lib/search';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 const SORTS: { value: SortKey; label: string }[] = [
   { value: 'price', label: 'Menor precio' },
@@ -23,14 +23,26 @@ const SORTS: { value: SortKey; label: string }[] = [
 
 export default function Results() {
   const router = useRouter();
-  const { q = '' } = useLocalSearchParams<{ q?: string }>();
+  // Desde el inicio se puede llegar con una categoría, solo ofertas o directo al mapa.
+  const {
+    q = '',
+    categoria,
+    ofertas,
+    vista,
+  } = useLocalSearchParams<{ q?: string; categoria?: string; ofertas?: string; vista?: string }>();
   const { stores, catalog, prices } = useApp();
+
+  const initialFilters: SearchFilters = {
+    ...DEFAULT_FILTERS,
+    ...(categoria && CATEGORIES.some((c) => c.id === categoria) ? { category: categoria as SearchFilters['category'] } : {}),
+    ...(ofertas === '1' ? { onlyOffers: true } : {}),
+  };
 
   const [draftQuery, setDraftQuery] = useState(q);
   const [sort, setSort] = useState<SortKey>('price');
-  const [mode, setMode] = useState<'list' | 'map'>('list');
-  const [filters, setFilters] = useState<SearchFilters>(DEFAULT_FILTERS);
-  const [draftFilters, setDraftFilters] = useState<SearchFilters>(DEFAULT_FILTERS);
+  const [mode, setMode] = useState<'list' | 'map'>(vista === 'mapa' ? 'map' : 'list');
+  const [filters, setFilters] = useState<SearchFilters>(initialFilters);
+  const [draftFilters, setDraftFilters] = useState<SearchFilters>(initialFilters);
   const [showFilters, setShowFilters] = useState(false);
 
   const interpretation = interpretQuery(q, catalog);
@@ -64,7 +76,17 @@ export default function Results() {
 
   return (
     <Screen>
-      <AppHeader title={q.length > 26 ? `${q.slice(0, 26)}…` : q || 'Resultados'} back right={<HeaderLoginButton />} />
+      <AppHeader
+        title={
+          q
+            ? q.length > 26
+              ? `${q.slice(0, 26)}…`
+              : q
+            : (CATEGORIES.find((c) => c.id === categoria)?.label ?? (ofertas === '1' ? 'Ofertas' : 'Todos los precios'))
+        }
+        back
+        right={<HeaderLoginButton />}
+      />
 
       <View style={styles.top}>
         <SearchBox
@@ -75,7 +97,7 @@ export default function Results() {
         />
         <Row style={{ justifyContent: 'space-between' }}>
           <Text style={styles.count}>
-            <Text style={{ fontWeight: '800', color: colors.text }}>{storeCount}</Text> comercios · {results.length} precios
+            <Text style={{ fontFamily: fonts.extrabold, color: colors.text }}>{storeCount}</Text> comercios · {results.length} precios
           </Text>
           <Row gap={spacing.sm}>
             <Pressable
@@ -148,6 +170,7 @@ export default function Results() {
                       {isCheapest && <Badge label="Más barato" tone="success" icon="trophy" />}
                       {r.price.offer && <Badge label="Oferta" tone="offer" icon="pricetag" />}
                       {r.price.source === 'ocr' && <Badge label="OCR validado" tone="ocr" icon="scan" />}
+                      {r.store.tarjetaVecina && <Badge label="Tarjeta Vecina" tone="primary" icon="card" />}
                     </Row>
                     <Text style={styles.meta}>Actualizado {formatRelativeDay(r.price.updatedAt)}</Text>
                   </View>
@@ -221,11 +244,11 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
     backgroundColor: colors.surface,
   },
-  filterText: { fontSize: font.sm, color: colors.primary, fontWeight: '700' },
+  filterText: { fontSize: font.sm, color: colors.primary, fontFamily: fonts.bold },
   toggle: { flexDirection: 'row', backgroundColor: colors.border, borderRadius: radius.pill, padding: 2 },
   toggleBtn: { paddingHorizontal: 12, paddingVertical: 5, borderRadius: radius.pill },
   toggleActive: { backgroundColor: colors.primary },
-  toggleText: { fontSize: font.sm, fontWeight: '700', color: colors.textSecondary },
+  toggleText: { fontSize: font.sm, fontFamily: fonts.bold, color: colors.textSecondary },
   semantic: {
     backgroundColor: colors.primaryLight,
     borderWidth: 1,
@@ -234,12 +257,12 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     gap: 4,
   },
-  semanticTitle: { fontSize: font.sm, fontWeight: '800', color: colors.primaryDark },
+  semanticTitle: { fontSize: font.sm, fontFamily: fonts.extrabold, color: colors.primaryDark },
   semanticText: { fontSize: font.sm, color: colors.text, lineHeight: 19 },
-  storeName: { fontSize: font.md, fontWeight: '700', color: colors.text, flex: 1 },
-  distance: { fontSize: font.sm, color: colors.textSecondary, fontWeight: '600' },
+  storeName: { fontSize: font.md, fontFamily: fonts.bold, color: colors.text, flex: 1 },
+  distance: { fontSize: font.sm, color: colors.textSecondary, fontFamily: fonts.semibold },
   product: { fontSize: font.sm, color: colors.textSecondary },
   meta: { fontSize: font.xs, color: colors.textSecondary },
-  price: { fontSize: font.xxl - 2, fontWeight: '800', color: colors.primary },
-  filterLabel: { fontSize: font.sm, fontWeight: '700', color: colors.text },
+  price: { fontSize: font.xxl - 2, fontFamily: fonts.extrabold, color: colors.primary },
+  filterLabel: { fontSize: font.sm, fontFamily: fonts.bold, color: colors.text },
 });

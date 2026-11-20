@@ -10,7 +10,7 @@ import { OCR_SAMPLE } from '@/data/seed';
 import { storeLabel } from '@/data/stores';
 import { formatPrice } from '@/lib/format';
 import { useApp } from '@/state/AppState';
-import { colors, font, radius, spacing } from '@/theme';
+import { colors, fonts, font, radius, spacing } from '@/theme';
 
 const STEPS = ['Detectando la pizarra…', 'Reconociendo productos…', 'Leyendo valores…', 'Validando con el catálogo…'];
 
@@ -110,7 +110,7 @@ function ControlButton({ icon, label, onPress }: { icon: IconName; label: string
 
 const styles = StyleSheet.create({
   viewfinder: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.xl },
-  hint: { position: 'absolute', top: 20, color: colors.white, fontSize: font.sm, fontWeight: '600' },
+  hint: { position: 'absolute', top: 20, color: colors.white, fontSize: font.sm, fontFamily: fonts.semibold },
   demo: { position: 'absolute', bottom: 40, color: 'rgba(255,255,255,0.6)', fontSize: font.xs },
   board: {
     width: '86%',
@@ -124,9 +124,9 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '-2deg' }],
     overflow: 'hidden',
   },
-  boardTitle: { color: '#FFF59D', fontWeight: '800', fontSize: font.md, textAlign: 'center', marginBottom: 4, letterSpacing: 1 },
+  boardTitle: { color: '#FFF59D', fontFamily: fonts.extrabold, fontSize: font.md, textAlign: 'center', marginBottom: 4, letterSpacing: 1 },
   boardRow: { flexDirection: 'row', justifyContent: 'space-between' },
-  boardText: { color: '#F5F5F5', fontSize: font.md, fontWeight: '600' },
+  boardText: { color: '#F5F5F5', fontSize: font.md, fontFamily: fonts.semibold },
   scanLine: { position: 'absolute', left: 0, right: 0, height: 3, backgroundColor: '#4DD0E1', boxShadow: '0 0 12px #4DD0E1' },
   corner: { position: 'absolute', width: 36, height: 36, borderColor: colors.white, borderRadius: 4 },
   controls: {
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0F1419',
   },
   control: { alignItems: 'center', gap: 4, width: 72 },
-  controlText: { color: colors.white, fontSize: font.xs, fontWeight: '600' },
+  controlText: { color: colors.white, fontSize: font.xs, fontFamily: fonts.semibold },
   shutter: {
     width: 76,
     height: 76,
@@ -168,8 +168,8 @@ const styles = StyleSheet.create({
     maxWidth: 340,
     alignItems: 'center',
   },
-  processingTitle: { fontSize: font.lg, fontWeight: '800', color: colors.text, marginTop: spacing.sm },
+  processingTitle: { fontSize: font.lg, fontFamily: fonts.extrabold, color: colors.text, marginTop: spacing.sm },
   processingText: { fontSize: font.sm, color: colors.textSecondary, marginBottom: spacing.sm },
   stepRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, alignSelf: 'stretch' },
-  stepText: { fontSize: font.sm, color: colors.text, fontWeight: '600' },
+  stepText: { fontSize: font.sm, color: colors.text, fontFamily: fonts.semibold },
 });
