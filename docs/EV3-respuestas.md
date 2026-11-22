@@ -244,6 +244,7 @@ La app se conecta directamente a Supabase con la URL y la clave publicable; cada
 - **App 1.3.0:**
   - Build de producción web generado con `npx expo export -p web` (`EXPO_PUBLIC_APP_ENV=produccion`), probado primero en local con `npx expo serve` contra la base real.
   - **Publicado en EAS Hosting el 22-11-2026** con `npx eas-cli@latest deploy`: **https://observatorio-pac--e3syd60fmo.expo.app** (despliegue de vista previa: tiene su propia URL y no reemplaza la versión anterior). Para dejarla como versión principal en `https://observatorio-pac.expo.app`: `npx eas-cli@latest deploy --prod`.
+  - **Limitación conocida de la vista previa:** el asistente con IA responde `503` porque las claves de OpenAI/DeepSeek están guardadas en EAS como variables *secretas*, que EAS Hosting no puede leer. La versión principal actual sí las tiene. Antes de pasar la 1.3.0 a producción hay que poner las claves en `.env.local` (o cambiar su visibilidad en EAS a *sensitive*), volver a desplegar y comprobar que `POST /api/chat` responde `200`.
   - APK (opcional): `npx eas-cli@latest build -p android --profile preview` → enlace de descarga: ✏️
 - **Cómo acceder:** abrir la URL web desde el navegador del computador o del celular. La pantalla de inicio muestra «Supabase · produccion · v1.3.0». Las cuentas de prueba están en el README.
 
