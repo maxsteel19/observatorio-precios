@@ -43,3 +43,9 @@ Cada incidencia indica cómo se detectó, el cambio que la resolvió y el result
 - **Decisión:** no se promovió la 1.3.0 a producción para no dejar sin asistente al APK 1.2.0, que usa `observatorio-pac.expo.app/api/chat`.
 - **Cómo cerrarla:** poner las claves en `.env.local` del equipo que despliega (o cambiar su visibilidad a *sensitive* en EAS), volver a desplegar, comprobar `POST /api/chat` → `200` y recién entonces `npx eas-cli@latest deploy --prod`.
 - **Resolución (22-11-2026):** las claves se cargaron en `.env.local` del equipo que despliega (archivo ignorado por Git) y se volvió a desplegar con `npx eas-cli@latest deploy`, que sube esas variables solo al servidor de EAS Hosting. Resultado al repetir la prueba: `POST /api/chat` → `200` en ~2,6 s con OpenAI; la clave de DeepSeek (respaldo) también respondió. La prueba E2E «el asistente con IA responde con los precios del observatorio» pasa contra la URL publicada (`evidencias/11-asistente-ia.png`).
+
+## 7. El dominio principal mostraba la versión anterior justo después de publicar
+
+- **Cómo se detectó:** inmediatamente después de `npx eas-cli@latest deploy --prod`, 2 de las 5 pruebas E2E fallaron contra `https://observatorio-pac.expo.app`: no aparecía el indicador de entorno ni el precio recién registrado, aunque las mismas pruebas pasaban en la URL propia del despliegue. El HTML del dominio principal seguía apuntando al bundle antiguo (`entry-ad08…`) y no al nuevo (`entry-e174…`), con la cabecera `Cache-Control: s-maxage=3600` (la CDN guarda las páginas hasta 1 hora).
+- **Cambio:** ninguno en el código. Se monitoreó el dominio cada 30 s hasta que la CDN sirvió la versión nueva (~10 minutos) y se documentó que tras cada publicación hay que esperar a que se renueve la caché antes de validar.
+- **Resultado:** al repetir las pruebas contra el dominio principal, 5/5 pasan (35,7 s).

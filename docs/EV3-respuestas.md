@@ -243,7 +243,7 @@ La app se conecta directamente a Supabase con la URL y la clave publicable; cada
 - **Base de datos y backend:** desplegados en Supabase (`https://cygqzrdeofngskjwmrir.supabase.co`), con 7 migraciones aplicadas, datos de prueba y 2 Edge Functions activas (`registro-comerciante` v1, `admin-usuarios` v1).
 - **App 1.3.0:**
   - Build de producción web generado con `npx expo export -p web` (`EXPO_PUBLIC_APP_ENV=produccion`), probado primero en local con `npx expo serve` contra la base real.
-  - **Publicado en EAS Hosting el 22-11-2026** con `npx eas-cli@latest deploy`: **https://observatorio-pac--978ss9m7j0.expo.app** (despliegue de vista previa: tiene su propia URL y no reemplaza la versión anterior). Para dejarla como versión principal en `https://observatorio-pac.expo.app`: `npx eas-cli@latest deploy --prod`.
+  - **Publicado en producción en EAS Hosting el 22-11-2026:** **https://observatorio-pac.expo.app** (despliegue `observatorio-pac--wnzvstnsp1`). Primero se publicó como vista previa (`npx eas-cli@latest deploy` → `observatorio-pac--978ss9m7j0.expo.app`), se validó con las pruebas E2E y el asistente, y luego se promovió con `npx eas-cli@latest deploy --prod`. La CDN de EAS guarda las páginas hasta 1 hora (`s-maxage=3600`), así que el dominio principal puede tardar unos minutos en mostrar la versión nueva.
   - **Asistente con IA:** funciona en esta versión (`POST /api/chat` → `200`, ~2,6 s, OpenAI `gpt-4o-mini` con respaldo DeepSeek). Las claves se cargan en el servidor desde las variables de entorno al desplegar; nunca llegan a la app ni a GitHub (ver incidencia 6). Captura: [`11-asistente-ia.png`](evidencias/11-asistente-ia.png).
   - APK (opcional): `npx eas-cli@latest build -p android --profile preview` → enlace de descarga: ✏️
 - **Cómo acceder:** abrir la URL web desde el navegador del computador o del celular. La pantalla de inicio muestra «Supabase · produccion · v1.3.0». Las cuentas de prueba están en el README.
@@ -268,7 +268,7 @@ Después de desplegar la base y generar el build de producción se ejecutó el f
 
 Esto confirmó que la app, la autenticación, la base de datos y las políticas estaban operativas. Capturas `01` a `05` en [`evidencias/`](evidencias/).
 
-Las pruebas E2E se repitieron **contra la URL publicada** (`E2E_BASE_URL=https://observatorio-pac--978ss9m7j0.expo.app npm run test:e2e`): **5/5 en 39,7 s** (incluye el asistente con IA). Las capturas de `docs/evidencias/` corresponden a esa ejecución; la `08` muestra el entorno «Supabase · produccion · v1.3.0».
+Las pruebas E2E se repitieron **contra la versión publicada**: primero en la vista previa (`observatorio-pac--978ss9m7j0.expo.app`, 5/5 en 39,7 s) y después de pasarla a producción en **https://observatorio-pac.expo.app**: **5/5 en 35,7 s** (`E2E_BASE_URL=https://observatorio-pac.expo.app npm run test:e2e`), incluido el asistente con IA. La captura `08` muestra el entorno «Supabase · produccion · v1.3.0».
 
 ### d) Corrección de errores
 
