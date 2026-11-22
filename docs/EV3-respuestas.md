@@ -272,7 +272,7 @@ Las pruebas E2E se repitieron **contra la versión publicada**: primero en la vi
 
 ### d) Corrección de errores
 
-Se corrigieron 5 incidencias ([incidencias.md](incidencias.md)). Ejemplo: en la prueba de integridad, un precio con producto inexistente devolvía «El producto no está activo» en vez del error de clave foránea. El trigger no distinguía «no existe» de «desactivado». Se cambió en la migración `20261121000700_trigger_precios_fk.sql` y al repetir la prueba el resultado es `23503 · violates foreign key constraint "precios_producto_id_fkey"`. Commit `9a2d8e8`.
+Se registraron y resolvieron 7 incidencias ([incidencias.md](incidencias.md)). Ejemplo: en la prueba de integridad, un precio con producto inexistente devolvía «El producto no está activo» en vez del error de clave foránea. El trigger no distinguía «no existe» de «desactivado». Se cambió en la migración `20261121000700_trigger_precios_fk.sql` y al repetir la prueba el resultado es `23503 · violates foreign key constraint "precios_producto_id_fkey"`. Commit `9a2d8e8`.
 
 ---
 
