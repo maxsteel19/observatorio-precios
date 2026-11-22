@@ -1,0 +1,60 @@
+
+
+  → Precio con producto y sucursal: {"id":275,"precio":1270,"productos":{"nombre":"Arroz grado 1"},"sucursales":{"comercios":{"nombre":"Minimarket El Sol"},"nombre_sucursal":"Sucursal Principal"}}
+▶ Integridad referencial y restricciones
+  ✔ un precio válido queda asociado a un producto y una sucursal existentes (593.4227ms)
+  → Producto inexistente: 23503 · insert or update on table "precios" violates foreign key constraint "precios_producto_id_fkey"
+  ✔ rechaza un precio con un producto inexistente (clave foránea, 23503) (299.4609ms)
+  → Sucursal inexistente: 23503 · insert or update on table "capturas" violates foreign key constraint "capturas_sucursal_id_fkey"
+  ✔ rechaza una captura en una sucursal inexistente (clave foránea, 23503) (167.8927ms)
+  → Reporte con sucursal inexistente: 23503 · insert or update on table "reportes" violates foreign key constraint "reportes_sucursal_id_fkey"
+  ✔ rechaza un reporte ciudadano sobre una sucursal inexistente (clave foránea, 23503) (283.6454ms)
+  → Precio -500: rechazado por precios_precio_check (23514)
+  ✔ rechaza precios negativos, cero o absurdos (CHECK, 23514) (448.0992ms)
+  ✔ rechaza una fecha de vigencia sin oferta (CHECK, 23514) (148.8899ms)
+  ✔ la función es_rut_valido de la base de datos valida el dígito verificador (302.2354ms)
+  → Transacción revertida: la captura con un producto inexistente no dejó precios parciales
+  ✔ la captura del fiscalizador guarda captura y precios en una transacción (598.9907ms)
+✔ Integridad referencial y restricciones (4430.7007ms)
+  → Login con clave incorrecta: 400 · invalid_credentials
+▶ Autenticación
+  ✔ rechaza una contraseña incorrecta (1273.1511ms)
+  → Fiscalizador desactivado: new row violates row-level security policy for table "capturas"
+  ✔ una cuenta desactivada no obtiene permisos aunque inicie sesión (746.3545ms)
+✔ Autenticación (2020.3629ms)
+  → Precio en sucursal propia (7): guardado
+▶ Autorización del comerciante (RLS)
+  ✔ PERMITIDO: registra un precio en su propia sucursal (297.5098ms)
+  → Precio en sucursal ajena (3): 42501 · new row violates row-level security policy for table "precios"
+  ✔ DENEGADO: no puede registrar precios en la sucursal de otro comercio (152.3623ms)
+  ✔ DENEGADO: no puede hacerse pasar por fiscalizador (fuente "ocr") (167.7639ms)
+  ✔ PERMITIDO: edita el horario de su sucursal (429.7588ms)
+  → Editar sucursal ajena (3): RLS filtró la fila: 0 filas actualizadas, el horario no cambió
+  ✔ DENEGADO: no puede modificar la sucursal de otro comercio (0 filas afectadas) (298.8674ms)
+  ✔ DENEGADO: no puede mover su sucursal a otro comercio (153.057ms)
+  ✔ DENEGADO: no puede cambiar su propio rol a administrador (447.2912ms)
+  → Comerciante aprueba solicitud: Solo un administrador puede aprobar solicitudes
+  ✔ DENEGADO: no puede aprobar solicitudes de comerciantes (150.1068ms)
+✔ Autorización del comerciante (RLS) (2401.7582ms)
+▶ Datos protegidos para el ciudadano anónimo
+  ✔ DENEGADO: no puede leer la auditoría (152.8912ms)
+  ✔ no ve perfiles ni solicitudes (RLS devuelve 0 filas) (296.328ms)
+  ✔ DENEGADO: no puede registrar precios (147.9945ms)
+  ✔ PERMITIDO: lee el comparador de precios vigentes (149.0384ms)
+✔ Datos protegidos para el ciudadano anónimo (746.659ms)
+  → Respuesta 400: {"error":"Revisa los datos del formulario","campos":{"rut":"RUT no válido (revisa el dígito verificador)","rutEmpresa":"RUT de la empresa no válido"}}
+▶ Validación en el servidor (Edge Functions)
+  ✔ registro-comerciante rechaza un RUT inválido con un mensaje por campo (303.6007ms)
+  ✔ registro-comerciante rechaza contraseñas cortas, emails y teléfonos inválidos (145.2542ms)
+  → Comerciante intenta crear un admin: 403 · Solo un administrador puede crear usuarios
+  ✔ admin-usuarios responde 403 si quien llama no es administrador (1039.1084ms)
+  ✔ admin-usuarios responde 401 sin sesión (221.7968ms)
+✔ Validación en el servidor (Edge Functions) (1710.129ms)
+ℹ tests 26
+ℹ suites 5
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6963.7588

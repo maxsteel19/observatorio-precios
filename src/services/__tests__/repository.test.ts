@@ -1,3 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
+
 import { productSlug } from '../repository';
 
 describe('Identificador de productos nuevos', () => {

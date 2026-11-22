@@ -1,0 +1,50 @@
+{
+  "fecha": "2026-11-22T02:02:02.572Z",
+  "entorno": "Supabase (cygqzrdeofngskjwmrir.supabase.co), plan gratuito, región sa-east-1",
+  "cliente": "Node v24.22.3 · autocannon · 20 conexiones · 30 s por escenario",
+  "criterios": {
+    "p97_5MaxMs": 500,
+    "erroresMax": 0
+  },
+  "resultados": [
+    {
+      "escenario": "Comparador: precio vigente de un producto en todas las sucursales",
+      "solicitudes": 5271,
+      "solicitudesPorSegundo": 176,
+      "latenciaPromedioMs": 113,
+      "p50Ms": 106,
+      "p90Ms": 137,
+      "p97_5Ms": 162,
+      "p99Ms": 236,
+      "maxMs": 431,
+      "errores": 0,
+      "cumple": true
+    },
+    {
+      "escenario": "Historial: precios de un producto en una sucursal",
+      "solicitudes": 5363,
+      "solicitudesPorSegundo": 179,
+      "latenciaPromedioMs": 111,
+      "p50Ms": 106,
+      "p90Ms": 135,
+      "p97_5Ms": 157,
+      "p99Ms": 172,
+      "maxMs": 418,
+      "errores": 0,
+      "cumple": true
+    },
+    {
+      "escenario": "Catálogo de productos activos",
+      "solicitudes": 5214,
+      "solicitudesPorSegundo": 174,
+      "latenciaPromedioMs": 115,
+      "p50Ms": 108,
+      "p90Ms": 138,
+      "p97_5Ms": 160,
+      "p99Ms": 216,
+      "maxMs": 446,
+      "errores": 0,
+      "cumple": true
+    }
+  ]
+}

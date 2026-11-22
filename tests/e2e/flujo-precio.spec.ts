@@ -59,6 +59,24 @@ test('el comerciante registra un precio y aparece en el comparador ciudadano', a
   await ciudadano.close();
 });
 
+test('la app muestra el entorno y el administrador ve el monitoreo y la auditoría', async ({ page }) => {
+  await abrir(page, '/');
+  await expect(page.getByText(/Supabase · /)).toBeVisible();
+  await page.getByText(/Supabase · /).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${EVIDENCIAS}/08-entorno-identificado.png` });
+
+  await page.setViewportSize({ width: 1280, height: 860 });
+  await iniciarSesion(page, 'admin@demo.cl', 'demo1234');
+  await expect(page.getByText('Dashboard', { exact: true })).toBeVisible();
+  await page.goto('/admin/monitoreo', { waitUntil: 'networkidle' });
+  await expect(page.getByText('Registro de actividad', { exact: false }).first()).toBeVisible();
+  await expect(page.getByText('registrar_precios_comerciante').first()).toBeVisible();
+  await page.screenshot({ path: `${EVIDENCIAS}/09-monitoreo.png` });
+  await page.goto('/admin/auditoria', { waitUntil: 'networkidle' });
+  await expect(page.getByText('Log de auditoría', { exact: true }).first()).toBeVisible();
+  await page.screenshot({ path: `${EVIDENCIAS}/10-auditoria.png` });
+});
+
 test('una contraseña incorrecta muestra un mensaje de error', async ({ page }) => {
   await iniciarSesion(page, 'comercio@demo.cl', 'clave-incorrecta');
   await expect(page.getByText('El correo o la contraseña no coinciden')).toBeVisible();

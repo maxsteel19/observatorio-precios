@@ -1,3 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
+
 import { formatPercent, formatPrice, normalize, parsePrice } from '../format';
 
 describe('Formato de precios y textos', () => {

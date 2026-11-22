@@ -1,3 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
+
 import { cleanRut, computeDv, formatRut, isValidRut } from '../rut';
 
 describe('Validación de RUT chileno (módulo 11)', () => {

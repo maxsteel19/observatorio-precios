@@ -1,0 +1,8 @@
+Prueba de carga · 20 conexiones concurrentes · 30 s por escenario · 2026-11-22T02:00:32.350Z
+■ Comparador: precio vigente de un producto en todas las sucursales
+  5271 solicitudes · 176 req/s · promedio 113 ms · p50 106 ms · p90 137 ms · p97,5 162 ms · p99 236 ms · máx 431 ms · errores 0 → CUMPLE
+■ Historial: precios de un producto en una sucursal
+  5363 solicitudes · 179 req/s · promedio 111 ms · p50 106 ms · p90 135 ms · p97,5 157 ms · p99 172 ms · máx 418 ms · errores 0 → CUMPLE
+■ Catálogo de productos activos
+  5214 solicitudes · 174 req/s · promedio 115 ms · p50 108 ms · p90 138 ms · p97,5 160 ms · p99 216 ms · máx 446 ms · errores 0 → CUMPLE
+Reporte guardado en docs/evidencias/reporte-carga.json

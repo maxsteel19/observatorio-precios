@@ -12,31 +12,85 @@ Incluye los 5 flujos del mockup:
 | **Administrador** | Dashboard con KPIs y evolución de precios por categoría, catálogo de productos, comercios, aprobación de cuentas de comerciantes, usuarios y roles, y log de auditoría. En pantallas anchas usa una barra lateral. |
 | **Acceso / registro** | Login, recuperación de contraseña y registro de comerciante en 2 pasos (con validación de RUT). |
 
-Todo funciona **sin internet** con datos de ejemplo en memoria, pensado para la feria. Los cambios se ven al instante entre perfiles: lo que guarda el fiscalizador o el comerciante aparece de inmediato en la app ciudadana.
 
-## Cómo ejecutarla
+Los datos viven en **Supabase** (PostgreSQL + Supabase Auth + Edge Functions): lo que guarda el fiscalizador o el comerciante aparece al instante en la app ciudadana de cualquier dispositivo. Si no hay backend configurado o no hay internet (por ejemplo en la feria), la app pasa a **modo demo** con datos de ejemplo en memoria. La pantalla de inicio muestra en qué entorno está corriendo («Supabase · desarrollo · v1.3.0» o «Modo demo»).
 
-Requisitos: Node.js LTS y la app **Expo Go** en tu celular (Android o iPhone).
+## Arquitectura
+
+La app sigue un patrón **MVC por capas** (vista → lógica → acceso a datos), y la base de datos aplica las reglas por su cuenta:
+
+```
+Pantallas (Vista)            src/app/**, src/components/**      Expo Router + React Native
+      │  useApp()
+Estado y lógica (Controlador) src/state/AppState.tsx            acciones: savePrices, login, approveMerchant…
+      │  llama a
+Acceso a datos (Modelo)       src/services/repository.ts        único lugar que consulta Supabase
+                              src/services/mappers.ts           filas de la BD ↔ tipos de la app
+      │  HTTPS (supabase-js)
+Supabase                      supabase/migrations/*.sql         tablas, RLS por rol, triggers, RPC
+                              supabase/functions/*              registro y alta de usuarios (validan en el servidor)
+```
+
+Ejemplo, registrar un precio: `comerciante/(tabs)/precio.tsx` valida el formulario → `useApp().savePrices()` → `repository.savePrices()` inserta en `precios` → Postgres aplica RLS (¿la sucursal es del comerciante?), las restricciones CHECK/FK y el trigger de autoría → `AppState` recarga `precios_vigentes` → el comparador ciudadano muestra el nuevo precio.
+
+## Requisitos
+
+| Herramienta | Versión | Para qué |
+|---|---|---|
+| Node.js | LTS (probado con 24.22) | Ejecutar Expo, las pruebas y los scripts |
+| npm | 10 o superior (viene con Node) | Dependencias |
+| Git | 2.4x o superior | Control de versiones |
+| Visual Studio Code | reciente | Editor recomendado (extensión **Expo Tools**, sugerida en `.vscode/extensions.json`) |
+| Expo Go | SDK 58 | Probar en el celular (Android o iPhone) |
+| Cuenta Supabase | plan gratuito | Base de datos, autenticación y Edge Functions |
+| Cuenta Expo (EAS) | plan gratuito | Compilar el APK y publicar la versión web |
+
+En Windows puedes revisar lo que falta con `powershell -ExecutionPolicy Bypass -File .\scripts\revisar-entorno.ps1`.
+
+## Instalación y ejecución local
 
 ```bash
+git clone https://github.com/maxsteel19/observatorio-precios.git
+cd observatorio-precios
 npm install
+cp .env.example .env.local      # en PowerShell: Copy-Item .env.example .env.local
+# completa EXPO_PUBLIC_SUPABASE_URL y EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 npx expo start
 ```
 
-- **En el celular:** escanea el QR que aparece en la terminal con Expo Go (el celular y el computador deben estar en la misma red Wi-Fi).
-- **En el navegador:** presiona `w` en la terminal o abre http://localhost:8081.
+- **En el celular:** escanea el QR con Expo Go (celular y computador en la misma red Wi-Fi).
+- **En el navegador:** presiona `w` o abre http://localhost:8081.
+- **Versión de producción web en local:** `npx expo export -p web` y luego `npx expo serve`.
+
+Para crear tu propia base de datos sigue [docs/base-de-datos.md](docs/base-de-datos.md#cómo-reproducir-la-base-de-datos).
+
+### Variables de entorno
+
+Archivo de ejemplo: [`.env.example`](.env.example). El real (`.env.local`) está en `.gitignore`.
+
+| Variable | Dónde se usa | ¿Secreta? |
+|---|---|---|
+| `EXPO_PUBLIC_SUPABASE_URL` | App: URL del proyecto Supabase | No (pública; la protección es RLS) |
+| `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | App: clave publicable `sb_publishable_…` | No (pública; la protección es RLS) |
+| `EXPO_PUBLIC_APP_ENV` | App: nombre del entorno que se muestra (`desarrollo`, `pruebas`, `produccion`) | No |
+| `EXPO_PUBLIC_API_URL` | App (APK): servidor del asistente | No |
+| `OPENAI_API_KEY`, `DEEPSEEK_API_KEY`, `CHAT_PROVIDER` | Solo servidor (`src/app/api/chat+api.ts`) | **Sí** |
+| `SUPABASE_SERVICE_ROLE_KEY` | Solo dentro de las Edge Functions (Supabase la inyecta) | **Sí**; nunca va en la app |
 
 ## Cuentas de prueba
 
-En la pantalla de acceso hay botones de **acceso directo demo** (Administrador, Fiscalizador, Comercio). También puedes escribir:
+Botones de **acceso rápido** en la pantalla de ingreso (Administrador, Fiscalizador, Comercio), o:
 
 | Perfil | Email | Clave |
 |---|---|---|
 | Administrador | `admin@demo.cl` | `demo1234` |
 | Fiscalizador | `fiscalizador@demo.cl` | `demo1234` |
-| Comerciante | `comercio@demo.cl` | `demo1234` |
+| Comerciante (Minimarket El Sol, sucursales 7 y 8) | `comercio@demo.cl` | `demo1234` |
+| Comerciante (Supermercado PAC, sucursal 3) | `superpac@demo.cl` | `demo1234` |
+| Fiscalizador desactivado | `rperez@demo.cl` | `demo1234` |
+| Comerciantes pendientes de aprobación | `laespiga@ejemplo.cl`, `donlucho@ejemplo.cl`, `sanjoaquin@ejemplo.cl` | `demo1234` |
 
-> Son cuentas de demostración definidas en `src/data/seed.ts`; no hay backend real todavía.
+> Son cuentas de demostración creadas por `supabase/seed.sql`. En un entorno de producción real se eliminan y las cuentas las crea el administrador.
 
 ## Guion sugerido para la feria (3–4 minutos)
 
@@ -46,7 +100,8 @@ En la pantalla de acceso hay botones de **acceso directo demo** (Administrador, 
 4. **Comerciante:** ingresa una oferta y muéstrala en la app ciudadana.
 5. **Registro + Administrador:** registra un comercio nuevo → entra como Administrador → **Cuentas** → apruébalo → revisa la **Auditoría**.
 
-> Los datos viven en memoria: al recargar la app vuelven al estado inicial (útil para reiniciar la demo entre visitantes). Navega dentro de la app en vez de recargar la página para conservar los cambios.
+> Con Supabase los cambios quedan guardados en la base de datos y se ven desde cualquier dispositivo. En **modo demo** (sin `.env.local` o sin internet) los datos viven en memoria: al recargar vuelven al estado inicial, lo que sirve para reiniciar la demo entre visitantes.
+
 
 ## Estructura
 
@@ -54,34 +109,67 @@ En la pantalla de acceso hay botones de **acceso directo demo** (Administrador, 
 src/
   app/                 Pantallas (Expo Router: cada archivo es una ruta)
     index.tsx            Ciudadano · inicio
-    resultados.tsx       Ciudadano · resultados de búsqueda
+    resultados.tsx       Ciudadano · comparador
     comercio/[id].tsx    Ciudadano · ficha del comercio
     historial.tsx        Ciudadano · historial de precio
-    reportar.tsx         Ciudadano · reportar precio
     auth/                Login, recuperar, registro, pendiente
     fiscalizador/        Perfil fiscalizador
     comerciante/         Perfil comerciante (pestañas + formularios)
-    admin/               Panel de administración
-  components/          Componentes reutilizables (UI, mapa ilustrado, gráfico, etc.)
-  data/                Catálogo, comercios y datos de ejemplo
-  lib/                 Búsqueda, formato de precios/fechas, validación de RUT
-  state/AppState.tsx   Estado global (único lugar a cambiar para conectar un backend)
-  theme.ts             Colores y medidas del mockup
+    admin/               Panel de administración (incluye Auditoría y Monitoreo)
+    api/chat+api.ts      Ruta de servidor del asistente con IA
+  components/          Componentes reutilizables (UI, mapa, gráfico, indicador de entorno…)
+  state/AppState.tsx   Estado global y lógica de la app (modo Supabase / modo demo)
+  services/            Acceso a datos: cliente Supabase, repositorio, mappers, logger, tipos de la BD
+  data/                Catálogo y datos de ejemplo (modo demo)
+  lib/                 Búsqueda, formato, validación de RUT
+supabase/
+  migrations/          Esquema SQL versionado (tablas, RLS, triggers, vistas, índices)
+  seed.sql             Datos de prueba
+  functions/           Edge Functions (Deno): registro-comerciante, admin-usuarios
+  pruebas/             Script de la prueba de rendimiento
+tests/
+  integracion/         Pruebas contra Supabase (integridad y seguridad)
+  e2e/                 Pruebas de extremo a extremo con Playwright
+  carga/               Prueba de carga con autocannon
+docs/                  Documentación de la EV3 y evidencias
 ```
 
-## Comandos útiles
+## Comandos
 
 ```bash
-npm run typecheck   # revisa tipos (TypeScript)
-npm run lint        # revisa el código (ESLint)
-npx expo-doctor     # diagnostica dependencias y configuración
+npm run typecheck          # TypeScript estricto
+npm run lint               # ESLint (eslint-config-expo)
+npm test                   # pruebas unitarias (Jest)
+npm run test:integracion   # pruebas contra Supabase (necesita .env.local)
+npm run test:e2e           # Playwright (levanta la app web si no está corriendo)
+npm run test:carga         # prueba de carga (20 conexiones × 30 s)
+npm run verify             # typecheck + lint + unitarias
+npx expo-doctor            # diagnostica dependencias y configuración
 ```
 
-## Próximos pasos sugeridos
+## Entornos y despliegue
 
-- **Backend con Supabase:** tablas `productos`, `comercios`, `precios`, `usuarios`, `auditoria`; login con Supabase Auth y permisos por rol con Row Level Security. Solo hay que reemplazar las acciones de `src/state/AppState.tsx`.
-- **Cámara y OCR reales:** `expo-camera` para la captura y un servicio de OCR/IA para leer la pizarra.
-- **APK para la feria:** `npx eas-cli@latest build -p android --profile preview` genera un APK instalable sin Android Studio.
+| Entorno | Dónde | Configuración |
+|---|---|---|
+| Desarrollo | `npx expo start` en el computador | `.env.local` (`EXPO_PUBLIC_APP_ENV=desarrollo`) |
+| Pruebas | APK de EAS (`preview`) / build web local | `eas.json` → perfil `preview` (`EXPO_PUBLIC_APP_ENV=pruebas`) |
+| Producción | Web en EAS Hosting · APK/AAB de EAS (`production`) | `eas.json` → perfil `production` |
+| Base de datos | Supabase `observatorio-precios-pac` (sa-east-1) | Migraciones en `supabase/migrations` |
+
+```bash
+npx eas-cli@latest login
+npx expo export -p web && npx eas-cli@latest deploy --prod      # versión web en EAS Hosting
+npx eas-cli@latest build -p android --profile preview           # APK instalable
+```
+
+## Documentación
+
+- [Respuestas de la pauta EV3](docs/EV3-respuestas.md)
+- [Base de datos: diagrama, tablas, restricciones, RLS](docs/base-de-datos.md)
+- [Plan de pruebas y resultados](docs/plan-de-pruebas.md)
+- [Optimización de consultas y pruebas de carga](docs/rendimiento.md)
+- [Incidencias corregidas](docs/incidencias.md)
+- [Evidencias (capturas y reportes)](docs/evidencias/)
 
 ## Asistente con IA
 
