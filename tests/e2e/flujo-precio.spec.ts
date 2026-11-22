@@ -77,6 +77,16 @@ test('la app muestra el entorno y el administrador ve el monitoreo y la auditor�
   await page.screenshot({ path: `${EVIDENCIAS}/10-auditoria.png` });
 });
 
+test('el asistente con IA responde con los precios del observatorio', async ({ page }) => {
+  await abrir(page, '/asistente');
+  await page.getByPlaceholder('Escribe tu pregunta…').fill('¿Dónde está más barato el arroz?');
+  await page.getByLabel('Enviar pregunta').click();
+  // La respuesta de la IA menciona un precio en pesos; si no hubiera servidor, aparecería «Respuesta sin conexión».
+  await expect(page.getByText(/\$1\.\d{3}/).first()).toBeVisible({ timeout: 45_000 });
+  await expect(page.getByText('Respuesta sin conexión', { exact: false })).toHaveCount(0);
+  await page.screenshot({ path: `${EVIDENCIAS}/11-asistente-ia.png` });
+});
+
 test('una contraseña incorrecta muestra un mensaje de error', async ({ page }) => {
   await iniciarSesion(page, 'comercio@demo.cl', 'clave-incorrecta');
   await expect(page.getByText('El correo o la contraseña no coinciden')).toBeVisible();

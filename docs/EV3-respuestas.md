@@ -243,8 +243,8 @@ La app se conecta directamente a Supabase con la URL y la clave publicable; cada
 - **Base de datos y backend:** desplegados en Supabase (`https://cygqzrdeofngskjwmrir.supabase.co`), con 7 migraciones aplicadas, datos de prueba y 2 Edge Functions activas (`registro-comerciante` v1, `admin-usuarios` v1).
 - **App 1.3.0:**
   - Build de producción web generado con `npx expo export -p web` (`EXPO_PUBLIC_APP_ENV=produccion`), probado primero en local con `npx expo serve` contra la base real.
-  - **Publicado en EAS Hosting el 22-11-2026** con `npx eas-cli@latest deploy`: **https://observatorio-pac--e3syd60fmo.expo.app** (despliegue de vista previa: tiene su propia URL y no reemplaza la versión anterior). Para dejarla como versión principal en `https://observatorio-pac.expo.app`: `npx eas-cli@latest deploy --prod`.
-  - **Limitación conocida de la vista previa:** el asistente con IA responde `503` porque las claves de OpenAI/DeepSeek están guardadas en EAS como variables *secretas*, que EAS Hosting no puede leer. La versión principal actual sí las tiene. Antes de pasar la 1.3.0 a producción hay que poner las claves en `.env.local` (o cambiar su visibilidad en EAS a *sensitive*), volver a desplegar y comprobar que `POST /api/chat` responde `200`.
+  - **Publicado en EAS Hosting el 22-11-2026** con `npx eas-cli@latest deploy`: **https://observatorio-pac--978ss9m7j0.expo.app** (despliegue de vista previa: tiene su propia URL y no reemplaza la versión anterior). Para dejarla como versión principal en `https://observatorio-pac.expo.app`: `npx eas-cli@latest deploy --prod`.
+  - **Asistente con IA:** funciona en esta versión (`POST /api/chat` → `200`, ~2,6 s, OpenAI `gpt-4o-mini` con respaldo DeepSeek). Las claves se cargan en el servidor desde las variables de entorno al desplegar; nunca llegan a la app ni a GitHub (ver incidencia 6). Captura: [`11-asistente-ia.png`](evidencias/11-asistente-ia.png).
   - APK (opcional): `npx eas-cli@latest build -p android --profile preview` → enlace de descarga: ✏️
 - **Cómo acceder:** abrir la URL web desde el navegador del computador o del celular. La pantalla de inicio muestra «Supabase · produccion · v1.3.0». Las cuentas de prueba están en el README.
 
@@ -268,7 +268,7 @@ Después de desplegar la base y generar el build de producción se ejecutó el f
 
 Esto confirmó que la app, la autenticación, la base de datos y las políticas estaban operativas. Capturas `01` a `05` en [`evidencias/`](evidencias/).
 
-Las mismas 4 pruebas E2E se repitieron **contra la URL publicada** (`E2E_BASE_URL=https://observatorio-pac--e3syd60fmo.expo.app npm run test:e2e`): **4/4 en 40,9 s**. Las capturas de `docs/evidencias/` corresponden a esa ejecución; la `08` muestra el entorno «Supabase · produccion · v1.3.0».
+Las pruebas E2E se repitieron **contra la URL publicada** (`E2E_BASE_URL=https://observatorio-pac--978ss9m7j0.expo.app npm run test:e2e`): **5/5 en 39,7 s** (incluye el asistente con IA). Las capturas de `docs/evidencias/` corresponden a esa ejecución; la `08` muestra el entorno «Supabase · produccion · v1.3.0».
 
 ### d) Corrección de errores
 
@@ -282,8 +282,8 @@ Detalle completo en [plan-de-pruebas.md](plan-de-pruebas.md).
 
 - **a) Casos de uso y escenarios críticos:** 9 flujos de la EV2 probables en la versión actual (comparador, historial, registrar precio, captura del fiscalizador, registro y aprobación de comerciantes, login por perfil, reportes, sucursales), cada uno con su caso normal y sus entradas límite.
 - **b) Alcance, tipos y responsables:** pruebas unitarias (Jest), de integración contra Supabase, funcionales E2E (Playwright), de rendimiento (SQL), de carga/estrés (autocannon) y de seguridad (RLS + Advisor). ✏️ Responsables: completar con los nombres del equipo.
-- **c) Scripts automatizados:** `npm test` (20 casos), `npm run test:integracion` (26), `npm run test:e2e` (4) y `npm run test:carga` (3 escenarios). Están en `src/**/__tests__/` y `tests/`.
-- **d) Métricas:** todas las pruebas cumplen el criterio definido (tabla de esperado vs. obtenido en [plan-de-pruebas.md](plan-de-pruebas.md#4-métricas-y-resultados)). Por ejemplo: carga p97,5 ≤ 500 ms → 162 ms; comparador ≥ 5× más rápido → 20×; 100 % de casos → 50/50.
+- **c) Scripts automatizados:** `npm test` (20 casos), `npm run test:integracion` (26), `npm run test:e2e` (5) y `npm run test:carga` (3 escenarios). Están en `src/**/__tests__/` y `tests/`.
+- **d) Métricas:** todas las pruebas cumplen el criterio definido (tabla de esperado vs. obtenido en [plan-de-pruebas.md](plan-de-pruebas.md#4-métricas-y-resultados)). Por ejemplo: carga p97,5 ≤ 500 ms → 162 ms; comparador ≥ 5× más rápido → 20×; 100 % de casos → 51/51.
 
 ---
 

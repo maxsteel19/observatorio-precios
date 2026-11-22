@@ -40,7 +40,7 @@ Flujos de la EV2 que se pueden probar en la versión 1.3.0:
 | [`src/services/__tests__/repository.test.ts`](../src/services/__tests__/repository.test.ts) | Id de productos nuevos compatible con la restricción CHECK. |
 | [`tests/integracion/integridad.test.mjs`](../tests/integracion/integridad.test.mjs) | Precio con producto y sucursal válidos; FK inexistente (23503); CHECK (23514); transacción revertida. |
 | [`tests/integracion/seguridad.test.mjs`](../tests/integracion/seguridad.test.mjs) | Login rechazado; cuenta desactivada; comerciante en sucursal propia (permitido) y ajena (denegado); escalada de rol; anónimo sin acceso a auditoría; Edge Functions 400/401/403. |
-| [`tests/e2e/flujo-precio.spec.ts`](../tests/e2e/flujo-precio.spec.ts) | Flujo completo comerciante → ciudadano; entorno identificado y pantallas de monitoreo/auditoría; login incorrecto; RUT inválido. Guarda capturas en `docs/evidencias/`. |
+| [`tests/e2e/flujo-precio.spec.ts`](../tests/e2e/flujo-precio.spec.ts) | Flujo completo comerciante → ciudadano; entorno identificado y pantallas de monitoreo/auditoría; asistente con IA; login incorrecto; RUT inválido. Guarda capturas en `docs/evidencias/`. |
 | [`tests/carga/carga.mjs`](../tests/carga/carga.mjs) | 3 escenarios de carga; guarda `docs/evidencias/reporte-carga.json`. |
 
 Las pruebas de integración y de carga necesitan `.env.local` (ver `.env.example`). Las E2E necesitan la app corriendo: `npx expo export -p web && npx expo serve --port 8082` y luego `E2E_BASE_URL=http://localhost:8082 npm run test:e2e`.
@@ -53,7 +53,7 @@ Ejecutadas el 21-11-2026 (Windows 11, Node 24, Supabase plan gratuito en `sa-eas
 |---|---|---|---|---|
 | Unitarias | 100 % de casos pasan | 20/20 | **20/20** | ✅ |
 | Integración | 100 % de casos pasan | 26/26 | **26/26** (7,3 s) | ✅ |
-| E2E | 100 % de casos pasan | 4/4 | **4/4** (16,1 s) | ✅ |
+| E2E | 100 % de casos pasan | 5/5 | **5/5** contra la URL publicada (39,7 s) | ✅ |
 | Precio con referencia inexistente | La base lo rechaza con 23503 | 23503 | `23503 · violates foreign key constraint "precios_producto_id_fkey"` | ✅ |
 | Precio negativo | La base lo rechaza con 23514 | 23514 | `23514 · precios_precio_check` | ✅ |
 | Comerciante en sucursal ajena | Denegado (42501) | 42501 | `42501 · new row violates row-level security policy for table "precios"` | ✅ |

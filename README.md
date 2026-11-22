@@ -153,7 +153,7 @@ npx expo-doctor            # diagnostica dependencias y configuración
 |---|---|---|
 | Desarrollo | `npx expo start` en el computador | `.env.local` (`EXPO_PUBLIC_APP_ENV=desarrollo`) |
 | Pruebas | APK de EAS (`preview`) / build web local | `eas.json` → perfil `preview` (`EXPO_PUBLIC_APP_ENV=pruebas`) |
-| Producción | Web en EAS Hosting: https://observatorio-pac--e3syd60fmo.expo.app · APK/AAB de EAS (`production`) | `eas.json` → perfil `production` |
+| Producción | Web en EAS Hosting: https://observatorio-pac--978ss9m7j0.expo.app · APK/AAB de EAS (`production`) | `eas.json` → perfil `production` |
 | Base de datos | Supabase `observatorio-precios-pac` (sa-east-1) | Migraciones en `supabase/migrations` |
 
 ```bash

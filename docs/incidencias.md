@@ -36,9 +36,10 @@ Cada incidencia indica cómo se detectó, el cambio que la resolvió y el result
 - **Cambio:** las pruebas esperan a que termine la carga (`abrir()` en `tests/e2e/flujo-precio.spec.ts`) y se ejecutan contra la **versión de producción** (`npx expo export -p web` + `npx expo serve`), que responde en ~10 ms en vez de 20 s.
 - **Resultado:** las pruebas E2E pasan de forma estable (4 de 4 en 16,1 s).
 
-## 6. El asistente con IA no responde en la nueva versión web (pendiente)
+## 6. El asistente con IA no respondía en la nueva versión web (resuelta)
 
 - **Cómo se detectó:** antes de pasar la versión 1.3.0 a producción se probó `POST /api/chat` en ambas versiones. La producción actual (`observatorio-pac.expo.app`) respondió `200 {"reply":"Ok.","provider":"openai"}`; la vista previa 1.3.0 respondió `503 · El asistente no está disponible en este momento`.
 - **Causa:** las claves `OPENAI_API_KEY` y `DEEPSEEK_API_KEY` existen en EAS, pero con visibilidad *secret* («solo accesibles en EAS Build»), así que EAS Hosting no las entrega a la ruta `/api/chat`, ni siquiera con `eas deploy --environment production`.
 - **Decisión:** no se promovió la 1.3.0 a producción para no dejar sin asistente al APK 1.2.0, que usa `observatorio-pac.expo.app/api/chat`.
 - **Cómo cerrarla:** poner las claves en `.env.local` del equipo que despliega (o cambiar su visibilidad a *sensitive* en EAS), volver a desplegar, comprobar `POST /api/chat` → `200` y recién entonces `npx eas-cli@latest deploy --prod`.
+- **Resolución (22-11-2026):** las claves se cargaron en `.env.local` del equipo que despliega (archivo ignorado por Git) y se volvió a desplegar con `npx eas-cli@latest deploy`, que sube esas variables solo al servidor de EAS Hosting. Resultado al repetir la prueba: `POST /api/chat` → `200` en ~2,6 s con OpenAI; la clave de DeepSeek (respaldo) también respondió. La prueba E2E «el asistente con IA responde con los precios del observatorio» pasa contra la URL publicada (`evidencias/11-asistente-ia.png`).
