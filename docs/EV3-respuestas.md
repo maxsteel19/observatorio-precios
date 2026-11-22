@@ -242,10 +242,10 @@ La app se conecta directamente a Supabase con la URL y la clave publicable; cada
 
 - **Base de datos y backend:** desplegados en Supabase (`https://cygqzrdeofngskjwmrir.supabase.co`), con 7 migraciones aplicadas, datos de prueba y 2 Edge Functions activas (`registro-comerciante` v1, `admin-usuarios` v1).
 - **App 1.3.0:**
-  - Build de producción web generado con `npx expo export -p web` y probado con `npx expo serve` (entorno "pruebas"), contra la base real.
-  - ✏️ Publicación en EAS Hosting: `npx eas-cli@latest login` y luego `npx eas-cli@latest deploy --prod` → URL: ✏️
-  - ✏️ APK: `npx eas-cli@latest build -p android --profile preview` → enlace de descarga: ✏️
-- **Cómo acceder:** abrir la URL web o instalar el APK. Las cuentas de prueba están en el README.
+  - Build de producción web generado con `npx expo export -p web` (`EXPO_PUBLIC_APP_ENV=produccion`), probado primero en local con `npx expo serve` contra la base real.
+  - **Publicado en EAS Hosting el 22-11-2026** con `npx eas-cli@latest deploy`: **https://observatorio-pac--e3syd60fmo.expo.app** (despliegue de vista previa: tiene su propia URL y no reemplaza la versión anterior). Para dejarla como versión principal en `https://observatorio-pac.expo.app`: `npx eas-cli@latest deploy --prod`.
+  - APK (opcional): `npx eas-cli@latest build -p android --profile preview` → enlace de descarga: ✏️
+- **Cómo acceder:** abrir la URL web desde el navegador del computador o del celular. La pantalla de inicio muestra «Supabase · produccion · v1.3.0». Las cuentas de prueba están en el README.
 
 ### b) Monitoreo y logs
 
@@ -266,6 +266,8 @@ Después de desplegar la base y generar el build de producción se ejecutó el f
 4. En **otro navegador sin sesión**, el comparador muestra Minimarket El Sol a $860 con la etiqueta «Más barato».
 
 Esto confirmó que la app, la autenticación, la base de datos y las políticas estaban operativas. Capturas `01` a `05` en [`evidencias/`](evidencias/).
+
+Las mismas 4 pruebas E2E se repitieron **contra la URL publicada** (`E2E_BASE_URL=https://observatorio-pac--e3syd60fmo.expo.app npm run test:e2e`): **4/4 en 40,9 s**. Las capturas de `docs/evidencias/` corresponden a esa ejecución; la `08` muestra el entorno «Supabase · produccion · v1.3.0».
 
 ### d) Corrección de errores
 
