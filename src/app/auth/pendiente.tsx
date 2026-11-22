@@ -9,8 +9,9 @@ import { colors, fonts, font, spacing } from '@/theme';
 export default function Pending() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { pending } = useApp();
-  const request = pending.find((p) => p.id === id);
+  const { pending, lastRegistration } = useApp();
+  // Con Supabase, un visitante no puede leer las solicitudes (RLS): se usa la que se envió desde este dispositivo.
+  const request = lastRegistration?.id === id ? lastRegistration : pending.find((p) => p.id === id);
   const comercio = request?.comercio ?? '—';
   const email = request?.email ?? '—';
 

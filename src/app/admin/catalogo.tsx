@@ -27,8 +27,8 @@ export default function CatalogAdmin() {
   const q = normalize(query);
   const list = catalog.filter((p) => (category === 'all' || p.category === category) && (!q || normalize(p.name).includes(q)));
 
-  const save = () => {
-    const err = addProduct({ name, unit, category: newCategory, brand });
+  const save = async () => {
+    const err = await addProduct({ name, unit, category: newCategory, brand });
     if (err) return setError(err);
     toast(`Producto agregado: ${name.trim()}`, 'success');
     setOpen(false);
@@ -67,7 +67,10 @@ export default function CatalogAdmin() {
                 small
                 title={p.active ? 'Desactivar' : 'Activar'}
                 variant={p.active ? 'danger' : 'secondary'}
-                onPress={() => toggleProduct(p.id)}
+                onPress={async () => {
+                  const err = await toggleProduct(p.id);
+                  if (err) toast(err, 'error');
+                }}
               />
             </View>
           ))}
@@ -81,7 +84,7 @@ export default function CatalogAdmin() {
         footer={
           <>
             <Button title="Cancelar" variant="secondary" style={{ flex: 1 }} onPress={() => setOpen(false)} />
-            <Button title="Guardar" style={{ flex: 1 }} onPress={save} />
+            <Button title="Guardar" style={{ flex: 1 }} onPress={() => void save()} />
           </>
         }>
         <Field label="Nombre del producto" value={name} onChangeText={setName} placeholder="Ej: Lentejas" error={error} />

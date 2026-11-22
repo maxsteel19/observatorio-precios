@@ -44,9 +44,9 @@ export default function PendingAccounts() {
                   title="Rechazar"
                   variant="danger"
                   style={{ flex: 1 }}
-                  onPress={() => {
-                    rejectMerchant(p.id);
-                    toast(`Solicitud rechazada: ${p.comercio}`);
+                  onPress={async () => {
+                    const err = await rejectMerchant(p.id);
+                    toast(err ?? `Solicitud rechazada: ${p.comercio}`, err ? 'error' : undefined);
                   }}
                 />
                 <Button
@@ -54,9 +54,9 @@ export default function PendingAccounts() {
                   title="Aprobar"
                   icon="checkmark"
                   style={{ flex: 1 }}
-                  onPress={() => {
-                    approveMerchant(p.id);
-                    toast(`Cuenta aprobada: ${p.comercio}`, 'success');
+                  onPress={async () => {
+                    const err = await approveMerchant(p.id);
+                    toast(err ?? `Cuenta aprobada: ${p.comercio}`, err ? 'error' : 'success');
                   }}
                 />
               </Row>

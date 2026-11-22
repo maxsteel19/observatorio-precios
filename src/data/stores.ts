@@ -33,6 +33,10 @@ export type Store = {
   map: { x: number; y: number };
   /** Nombre del comercio dueño (cuenta de comerciante), si tiene una. */
   merchant?: string;
+  /** Id de la cuenta de comerciante dueña (solo con backend Supabase). */
+  ownerId?: string;
+  /** Id del comercio (empresa) al que pertenece la sucursal (solo con backend Supabase). */
+  comercioId?: number;
   /** Beneficio para quienes muestran la Tarjeta Vecina PAC (convenio de ejemplo). */
   tarjetaVecina?: string;
   active: boolean;

@@ -10,7 +10,10 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://observatorio-pac.expo.app"
+        "EXPO_PUBLIC_API_URL": "https://observatorio-pac.expo.app",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://cygqzrdeofngskjwmrir.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_0AAfZHz1gi_40P5EWLdkag_OoZ7d87q",
+        "EXPO_PUBLIC_APP_ENV": "pruebas"
       }
     },
     "production": {
@@ -18,7 +21,10 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://observatorio-pac.expo.app"
+        "EXPO_PUBLIC_API_URL": "https://observatorio-pac.expo.app",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://cygqzrdeofngskjwmrir.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_0AAfZHz1gi_40P5EWLdkag_OoZ7d87q",
+        "EXPO_PUBLIC_APP_ENV": "produccion"
       }
     }
   }

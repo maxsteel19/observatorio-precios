@@ -7,7 +7,7 @@ import { Stack, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
 
 import { ToastProvider } from '@/components/Toast';
 import { AppStateProvider, useApp } from '@/state/AppState';
@@ -40,10 +40,13 @@ export default function RootLayout() {
 }
 
 function RootNavigator() {
-  const { session } = useApp();
+  const { session, loading } = useApp();
   const segments = useSegments();
   // El panel de administración usa todo el ancho; el resto se ve como teléfono en pantallas grandes.
   const wide = segments[0] === 'admin';
+  // Mientras se restaura la sesión guardada no se expulsa a nadie de su panel (p. ej. al recargar la página);
+  // los datos igual están protegidos por RLS en la base de datos.
+  const allow = (role: NonNullable<typeof session>['role']) => loading || session?.role === role;
 
   return (
     <View style={styles.outer}>
@@ -58,16 +61,21 @@ function RootNavigator() {
             }}>
             {/* Cada panel solo es accesible con la sesión del perfil correspondiente.
                 Al cerrar sesión, Expo Router vuelve automáticamente al inicio. */}
-            <Stack.Protected guard={session?.role === 'fiscalizador'}>
+            <Stack.Protected guard={allow('fiscalizador')}>
               <Stack.Screen name="fiscalizador" />
             </Stack.Protected>
-            <Stack.Protected guard={session?.role === 'comerciante'}>
+            <Stack.Protected guard={allow('comerciante')}>
               <Stack.Screen name="comerciante" />
             </Stack.Protected>
-            <Stack.Protected guard={session?.role === 'admin'}>
+            <Stack.Protected guard={allow('admin')}>
               <Stack.Screen name="admin" />
             </Stack.Protected>
           </Stack>
+          {loading && (
+            <View style={styles.loading} accessibilityLabel="Cargando datos del observatorio">
+              <ActivityIndicator size="large" color={colors.white} />
+            </View>
+          )}
         </ToastProvider>
       </View>
     </View>
@@ -78,4 +86,5 @@ const styles = StyleSheet.create({
   outer: { flex: 1, backgroundColor: Platform.OS === 'web' ? '#0A1A33' : colors.bg },
   app: { flex: 1, width: '100%', backgroundColor: colors.bg, overflow: 'hidden' },
   phone: { maxWidth: 480, alignSelf: 'center', boxShadow: '0 0 60px rgba(0,0,0,0.45)' },
+  loading: { ...StyleSheet.absoluteFill, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
 });

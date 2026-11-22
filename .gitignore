@@ -41,3 +41,9 @@ example
 # generated native folders
 /ios
 /android
+
+# pruebas
+test-results/
+tests/e2e/reporte/
+playwright-report/
+.claude/launch.json

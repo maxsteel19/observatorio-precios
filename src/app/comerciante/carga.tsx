@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppHeader } from '@/components/AppHeader';
+import { useToast } from '@/components/Toast';
 import { Badge, Button, Card, ChipGroup, Content, Icon, Row, Screen, StatBox } from '@/components/ui';
 import { normalize, formatPrice } from '@/lib/format';
 import { panelHref } from '@/lib/routes';
@@ -56,9 +57,14 @@ export default function BulkUpload() {
   };
 
   const valid = rows.filter((r) => !r.error);
-  const confirm = () => {
-    if (!storeId) return;
-    savePrices(storeId, valid.map((r) => ({ productId: r.productId!, price: r.price!, offer: false })), 'carga');
+  const [saving, setSaving] = useState(false);
+  const toast = useToast();
+  const confirm = async () => {
+    if (!storeId || saving) return;
+    setSaving(true);
+    const err = await savePrices(storeId, valid.map((r) => ({ productId: r.productId!, price: r.price!, offer: false })), 'carga');
+    setSaving(false);
+    if (err) return toast(err, 'error');
     setSaved(valid.length);
     setStage('done');
   };
@@ -119,7 +125,7 @@ export default function BulkUpload() {
                 </View>
               ))}
             </View>
-            <Button title={`Confirmar carga de ${valid.length} filas válidas`} icon="checkmark" onPress={confirm} disabled={!storeId || valid.length === 0} />
+            <Button title={`Confirmar carga de ${valid.length} filas válidas`} icon="checkmark" onPress={() => void confirm()} loading={saving} disabled={!storeId || valid.length === 0} />
             <Button title="Subir otro archivo" variant="ghost" onPress={() => setStage('select')} />
           </>
         )}

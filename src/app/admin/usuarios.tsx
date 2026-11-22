@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { AdminScreen } from '@/components/AdminScreen';
 import { Sheet } from '@/components/Sheet';
 import { useToast } from '@/components/Toast';
-import { Avatar, Badge, Button, ChipGroup, EmptyState, Field, SearchBox } from '@/components/ui';
+import { Avatar, Badge, Button, Card, ChipGroup, EmptyState, Field, SearchBox } from '@/components/ui';
 import { normalize } from '@/lib/format';
 import { useApp } from '@/state/AppState';
 import { colors, fonts, font, radius, roleInfo, spacing, type Role } from '@/theme';
@@ -28,10 +28,14 @@ export default function UsersAdmin() {
     (u) => (role === 'all' || u.role === role) && (!q || normalize(u.name).includes(q) || u.email.includes(q)),
   );
 
-  const save = () => {
-    const err = addUser({ name, email, role: newRole });
-    if (err) return setError(err);
+  const [created, setCreated] = useState<{ email: string; password: string } | null>(null);
+
+  const save = async () => {
+    const result = await addUser({ name, email, role: newRole });
+    if (result.error) return setError(result.error);
     toast(`Usuario creado: ${name.trim()}`, 'success');
+    // Con Supabase la cuenta se crea con una contraseña temporal que se muestra una sola vez.
+    if (result.tempPassword) setCreated({ email: email.trim().toLowerCase(), password: result.tempPassword });
     setOpen(false);
     setName('');
     setEmail('');
@@ -43,6 +47,16 @@ export default function UsersAdmin() {
       title="Usuarios del sistema"
       subtitle={`${users.filter((u) => u.active).length} cuentas activas`}
       actions={<Button small title="Nuevo usuario" icon="person-add" onPress={() => setOpen(true)} />}>
+      {created && (
+        <Card style={styles.created}>
+          <Text style={styles.createdTitle}>Cuenta creada: {created.email}</Text>
+          <Text style={styles.createdText} selectable>
+            Contraseña temporal: <Text style={{ fontFamily: fonts.extrabold }}>{created.password}</Text>
+          </Text>
+          <Text style={styles.createdHint}>Entrégala a la persona por un canal seguro. No se volverá a mostrar.</Text>
+          <Button small title="Listo" variant="secondary" onPress={() => setCreated(null)} />
+        </Card>
+      )}
       <SearchBox value={query} onChangeText={setQuery} placeholder="Buscar por nombre o email…" />
       <ChipGroup
         options={[{ value: 'all' as const, label: 'Todos' }, ...STAFF_ROLES.map((r) => ({ value: r, label: roleInfo[r].label }))]}
@@ -69,7 +83,10 @@ export default function UsersAdmin() {
                 title={u.active ? 'Desactivar' : 'Activar'}
                 variant={u.active ? 'danger' : 'secondary'}
                 disabled={u.email === session?.email}
-                onPress={() => toggleUser(u.id)}
+                onPress={async () => {
+                  const err = await toggleUser(u.id);
+                  if (err) toast(err, 'error');
+                }}
               />
             </View>
           ))}
@@ -83,7 +100,7 @@ export default function UsersAdmin() {
         footer={
           <>
             <Button title="Cancelar" variant="secondary" style={{ flex: 1 }} onPress={() => setOpen(false)} />
-            <Button title="Crear usuario" style={{ flex: 1 }} onPress={save} />
+            <Button title="Crear usuario" style={{ flex: 1 }} onPress={() => void save()} />
           </>
         }>
         <Field label="Nombre completo" value={name} onChangeText={setName} placeholder="Nombre Apellido" />
@@ -114,4 +131,8 @@ const styles = StyleSheet.create({
   rolePill: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: radius.pill },
   roleText: { fontSize: font.xs, fontFamily: fonts.bold },
   label: { fontSize: font.sm, fontFamily: fonts.semibold, color: colors.text },
+  created: { gap: spacing.sm, backgroundColor: colors.primaryLight, boxShadow: 'none' },
+  createdTitle: { fontSize: font.md, fontFamily: fonts.bold, color: colors.primaryDark },
+  createdText: { fontSize: font.md, color: colors.text },
+  createdHint: { fontSize: font.xs, color: colors.textSecondary },
 });

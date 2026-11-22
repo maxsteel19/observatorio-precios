@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { EnvironmentBadge } from '@/components/EnvironmentBadge';
 import { HeaderLoginButton } from '@/components/HeaderLoginButton';
 import { AppIcon, type IconName } from '@/components/icons';
 import { IllustratedMap } from '@/components/IllustratedMap';
@@ -39,7 +40,7 @@ type Deal = { product: Product; best: PriceEntry; store: Store; count: number; a
 export default function CitizenHome() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { stores, prices, catalog } = useApp();
+  const { stores, prices, catalog, mode } = useApp();
   const [query, setQuery] = useState('');
 
   const search = (q: string) => {
@@ -415,8 +416,11 @@ export default function CitizenHome() {
           <Text style={styles.aboutText}>Acerca del Observatorio Municipal de Precios</Text>
         </Pressable>
         <Text style={styles.footer}>
-          Datos de demostración. Precios registrados por fiscalizadores municipales, lectura OCR validada y comercios adheridos.
+          {mode === 'supabase'
+            ? 'Precios registrados por fiscalizadores municipales, lectura OCR validada y comercios adheridos.'
+            : 'Datos de demostración. Precios registrados por fiscalizadores municipales, lectura OCR validada y comercios adheridos.'}
         </Text>
+        <EnvironmentBadge />
       </ScrollView>
 
       {/* Botón flotante del asistente con IA */}

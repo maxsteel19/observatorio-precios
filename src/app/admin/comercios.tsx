@@ -46,7 +46,7 @@ export default function StoresAdmin() {
               </View>
               <Badge label={storeTypeLabel(s.type)} tone="primary" />
               <Badge label={s.active ? 'Activo' : 'Inactivo'} tone={s.active ? 'success' : 'neutral'} />
-              <Button small title={s.active ? 'Desactivar' : 'Activar'} variant={s.active ? 'danger' : 'secondary'} onPress={() => toggleStore(s.id)} />
+              <Button small title={s.active ? 'Desactivar' : 'Activar'} variant={s.active ? 'danger' : 'secondary'} onPress={() => void toggleStore(s.id)} />
             </View>
           ))}
         </View>

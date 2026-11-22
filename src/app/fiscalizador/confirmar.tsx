@@ -30,7 +30,8 @@ export default function ConfirmPrices() {
   const router = useRouter();
   const toast = useToast();
   const { storeId, mode = 'ocr' } = useLocalSearchParams<{ storeId: string; mode?: 'ocr' | 'manual' }>();
-  const { stores, catalog, savePrices, addCapture } = useApp();
+  const { stores, catalog, saveCapture } = useApp();
+  const [saving, setSaving] = useState(false);
   const store = stores.find((s) => s.id === Number(storeId));
 
   const [rows, setRows] = useState<RowData[]>(() =>
@@ -48,16 +49,19 @@ export default function ConfirmPrices() {
     setPickerFor(key);
   };
 
-  const save = () => {
-    if (!store) return;
+  const save = async () => {
+    if (!store || saving) return;
     const valid = rows.filter((r) => r.productId && parsePrice(r.price) > 0);
     if (valid.length === 0 || valid.length !== rows.length) {
       toast('Completa producto y precio en todas las filas', 'error');
       return;
     }
     const items = valid.map((r) => ({ productId: r.productId!, price: parsePrice(r.price), offer: false }));
-    savePrices(store.id, items, mode === 'ocr' ? 'ocr' : 'fiscalizador');
-    addCapture(store.id, items.map((i) => i.productId), mode === 'ocr' ? 'ocr' : 'manual');
+    setSaving(true);
+    // Captura y precios se guardan juntos (una transacción en la base de datos).
+    const err = await saveCapture(store.id, items, mode === 'ocr' ? 'ocr' : 'manual');
+    setSaving(false);
+    if (err) return toast(err, 'error');
     router.replace({ pathname: '/fiscalizador/exito', params: { storeId: String(store.id), count: String(items.length) } });
   };
 
@@ -112,7 +116,7 @@ export default function ConfirmPrices() {
         })}
 
         <Button title="Agregar producto" icon="add" variant="ghost" onPress={addRow} />
-        <Button title="Confirmar y guardar" icon="checkmark" onPress={save} />
+        <Button title="Confirmar y guardar" icon="checkmark" onPress={() => void save()} loading={saving} />
         {mode === 'ocr' && (
           <Button title="Rechazar todo (ir a manual)" variant="danger" onPress={() => setRows([{ key: nextKey(), productId: null, price: '' }])} />
         )}

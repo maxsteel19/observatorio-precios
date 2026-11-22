@@ -25,18 +25,28 @@ export default function EnterPrice() {
   const [until, setUntil] = useState('');
   const [picker, setPicker] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const product = catalog.find((p) => p.id === productId);
   const current = prices.find((p) => p.storeId === storeId && p.productId === productId);
 
-  const save = () => {
+  const save = async () => {
     const normal = parsePrice(price);
     const special = parsePrice(offerPrice);
     if (!storeId || !productId) return setError('Selecciona sucursal y producto');
     if (!(normal > 0)) return setError('Ingresa un precio válido');
+    if (normal > 10_000_000) return setError('El precio no puede superar $10.000.000');
     if (offer && !(special > 0 && special < normal)) return setError('El precio oferta debe ser menor al precio normal');
+    if (offer && until && !/^\d{1,2}-\d{1,2}-\d{4}$/.test(until.trim())) return setError('La vigencia debe tener el formato dd-mm-aaaa');
     setError(null);
-    savePrices(storeId, [{ productId, price: offer ? special : normal, offer, offerUntil: offer && until ? until : undefined }], 'comerciante');
+    setSaving(true);
+    const err = await savePrices(
+      storeId,
+      [{ productId, price: offer ? special : normal, offer, offerUntil: offer && until ? until.trim() : undefined }],
+      'comerciante',
+    );
+    setSaving(false);
+    if (err) return setError(err);
     toast(`${product?.name} guardado: ${formatPrice(offer ? special : normal)}`, 'success');
     setProductId(null);
     setPrice('');
@@ -93,7 +103,7 @@ export default function EnterPrice() {
         )}
 
         {error && <Text style={styles.error}>{error}</Text>}
-        <Button title="Guardar precio" icon="checkmark" onPress={save} />
+        <Button title="Guardar precio" icon="checkmark" onPress={() => void save()} loading={saving} />
       </Content>
 
       <ProductPicker visible={picker} onClose={() => setPicker(false)} onSelect={setProductId} />

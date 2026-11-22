@@ -10,7 +10,7 @@ export function LogoutButton() {
   return (
     <Pressable
       accessibilityRole="button"
-      onPress={logout}
+      onPress={() => void logout()}
       style={({ pressed }) => [styles.btn, pressed && { opacity: 0.7 }]}>
       <Icon name="log-out-outline" size={16} color={colors.white} />
       <Text style={styles.text}>Salir</Text>

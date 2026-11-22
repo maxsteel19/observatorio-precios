@@ -26,18 +26,25 @@ export default function Login() {
   const { login, loginAs, session } = useApp();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const submit = () => {
+  const submit = async () => {
+    if (loading) return;
     setLoading(true);
-    setError(false);
-    // Pequeña espera para que se note el estado de carga en la demo.
-    setTimeout(() => {
-      const ok = login(email, password);
-      setLoading(false);
-      if (!ok) setError(true);
-    }, 500);
+    setError(null);
+    const result = await login(email, password);
+    setLoading(false);
+    if (result.error) setError(result.error);
+  };
+
+  const quickAccess = async (role: StaffRole) => {
+    if (loading) return;
+    setLoading(true);
+    setError(null);
+    const result = await loginAs(role);
+    setLoading(false);
+    if (result.error) setError(result.error);
   };
 
   const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
@@ -77,7 +84,9 @@ export default function Login() {
             {error && (
               <View style={styles.error}>
                 <Icon name="alert-circle" size={18} color={colors.danger} />
-                <Text style={styles.errorText}>El correo o la contraseña no coinciden. Revisa los datos e inténtalo de nuevo.</Text>
+                <Text style={styles.errorText} accessibilityRole="alert">
+                  {error}
+                </Text>
               </View>
             )}
 
@@ -98,13 +107,13 @@ export default function Login() {
               onChangeText={setPassword}
               placeholder="Tu contraseña"
               secure
-              onSubmitEditing={submit}
+              onSubmitEditing={() => void submit()}
             />
             <Pressable onPress={() => router.push('/auth/recuperar')} style={styles.forgot} hitSlop={8}>
               <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
             </Pressable>
 
-            <Button title="Iniciar sesión" onPress={submit} loading={loading} disabled={!email || !password} />
+            <Button title="Iniciar sesión" onPress={() => void submit()} loading={loading} disabled={!email || !password} />
 
             <View style={styles.divider}>
               <View style={styles.line} />
@@ -123,7 +132,7 @@ export default function Login() {
                 {DEMO.map(({ role, label, icon }) => (
                   <Pressable
                     key={role}
-                    onPress={() => loginAs(role)}
+                    onPress={() => void quickAccess(role)}
                     style={({ pressed }) => [styles.demoBtn, pressed && { transform: [{ scale: 0.97 }] }]}>
                     <View style={[styles.demoIcon, { backgroundColor: roleInfo[role].bg }]}>
                       <Ionicons name={icon} size={20} color={roleInfo[role].color} />

@@ -41,6 +41,7 @@ export default function AdminLayout() {
       />
       <Tabs.Screen name="usuarios" options={{ title: 'Usuarios', tabBarIcon: icon('people-outline') }} />
       <Tabs.Screen name="auditoria" options={{ title: 'Auditoría', tabBarIcon: icon('shield-checkmark-outline') }} />
+      <Tabs.Screen name="monitoreo" options={{ title: 'Monitoreo', tabBarIcon: icon('pulse-outline') }} />
     </Tabs>
   );
 }

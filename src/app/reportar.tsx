@@ -29,13 +29,22 @@ export default function Report() {
   const [comment, setComment] = useState('');
   const [error, setError] = useState(false);
 
-  const submit = () => {
+  const [sending, setSending] = useState(false);
+
+  const submit = async () => {
     if (!reason || !store) {
       setError(true);
       toast('Selecciona un motivo para el reporte', 'error');
       return;
     }
-    addReport(store.id, reason, comment.trim());
+    if (comment.trim().length > 500) {
+      toast('El comentario puede tener hasta 500 caracteres', 'error');
+      return;
+    }
+    setSending(true);
+    const err = await addReport(store.id, reason, comment.trim());
+    setSending(false);
+    if (err) return toast(err, 'error');
     toast('¡Gracias! Tu reporte fue enviado', 'success');
     if (router.canGoBack()) router.back();
     else router.replace('/');
@@ -83,7 +92,7 @@ export default function Report() {
           hint="Tu reporte ayuda a mantener los datos actualizados para toda la comuna."
         />
 
-        <Button title="Enviar reporte" icon="send" onPress={submit} style={{ marginTop: spacing.sm }} />
+        <Button title="Enviar reporte" icon="send" onPress={() => void submit()} loading={sending} style={{ marginTop: spacing.sm }} />
       </Content>
     </Screen>
   );

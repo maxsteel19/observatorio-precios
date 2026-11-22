@@ -8,7 +8,7 @@ import { IllustratedMap } from '@/components/IllustratedMap';
 import { useToast } from '@/components/Toast';
 import { Button, Content, Field, Screen, SwitchRow } from '@/components/ui';
 import { CENTER } from '@/data/stores';
-import { useApp } from '@/state/AppState';
+import { useApp, useMerchantStores } from '@/state/AppState';
 import { colors, fonts, font, spacing } from '@/theme';
 
 export default function BranchForm() {
@@ -16,7 +16,9 @@ export default function BranchForm() {
   const toast = useToast();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const { stores, session, saveStore } = useApp();
+  const myStores = useMerchantStores();
   const existing = id ? stores.find((s) => s.id === Number(id)) : undefined;
+  const [saving, setSaving] = useState(false);
 
   const [branch, setBranch] = useState(existing?.branch ?? '');
   const [address, setAddress] = useState(existing?.address ?? '');
@@ -26,11 +28,13 @@ export default function BranchForm() {
   const [active, setActive] = useState(existing?.active ?? true);
   const [error, setError] = useState<string | null>(null);
 
-  const save = () => {
+  const save = async () => {
     if (!branch.trim() || !address.trim()) return setError('Completa el nombre y la dirección');
     if (!pos) return setError('Toca el mapa para ubicar la sucursal');
+    if (phone.trim() && !/^\+?[0-9 ]{8,16}$/.test(phone.trim())) return setError('Teléfono no válido (ej: +56 2 2555 0000)');
     setError(null);
-    saveStore({
+    setSaving(true);
+    const err = await saveStore({
       id: existing?.id,
       name: session?.name ?? 'Comercio',
       branch: branch.trim(),
@@ -43,8 +47,12 @@ export default function BranchForm() {
       map: pos,
       type: existing?.type ?? 'minimarket',
       merchant: session?.name,
+      ownerId: session?.userId,
+      comercioId: existing?.comercioId ?? myStores[0]?.comercioId,
       active,
     });
+    setSaving(false);
+    if (err) return setError(err);
     toast(existing ? 'Sucursal actualizada' : 'Sucursal agregada', 'success');
     if (router.canGoBack()) router.back();
     else router.replace('/comerciante/sucursales');
@@ -70,7 +78,7 @@ export default function BranchForm() {
         </View>
         <SwitchRow label="Sucursal activa" hint="Las sucursales inactivas no aparecen en las búsquedas." value={active} onChange={setActive} />
         {error && <Text style={styles.error}>{error}</Text>}
-        <Button title="Guardar sucursal" icon="checkmark" onPress={save} />
+        <Button title="Guardar sucursal" icon="checkmark" onPress={() => void save()} loading={saving} />
       </Content>
     </Screen>
   );

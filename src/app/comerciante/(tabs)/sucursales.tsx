@@ -61,8 +61,9 @@ export default function Branches() {
                 title={s.active ? 'Desactivar' : 'Activar'}
                 variant={s.active ? 'danger' : 'primary'}
                 style={{ flex: 1 }}
-                onPress={() => {
-                  toggleStore(s.id);
+                onPress={async () => {
+                  const err = await toggleStore(s.id);
+                  if (err) return toast(err, 'error');
                   toast(s.active ? 'Sucursal desactivada: ya no aparece en búsquedas' : 'Sucursal activada', 'success');
                 }}
               />

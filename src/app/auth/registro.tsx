@@ -17,6 +17,8 @@ export default function Register() {
   const { registerMerchant } = useApp();
   const [step, setStep] = useState<1 | 2>(1);
   const [errors, setErrors] = useState<Errors>({});
+  const [sending, setSending] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -42,15 +44,17 @@ export default function Register() {
     if (Object.keys(e).length === 0) setStep(2);
   };
 
-  const submit = () => {
+  const submit = async () => {
     const e: Errors = {};
     if (!comercio.trim()) e.comercio = 'Requerido';
     if (!isValidRut(rutEmpresa)) e.rutEmpresa = 'RUT no válido';
     if (!tipo) e.tipo = 'Selecciona un tipo de comercio';
-    if (telefono.replace(/\D/g, '').length < 8) e.telefono = 'Teléfono no válido';
+    if (!/^\+?[0-9 ]{8,16}$/.test(telefono.trim())) e.telefono = 'Teléfono no válido (ej: +56 9 1234 5678)';
     setErrors(e);
-    if (Object.keys(e).length > 0 || !tipo) return;
-    const id = registerMerchant({
+    setServerError(null);
+    if (Object.keys(e).length > 0 || !tipo || sending) return;
+    setSending(true);
+    const result = await registerMerchant({
       comercio: comercio.trim(),
       rutEmpresa: formatRut(rutEmpresa),
       tipo,
@@ -58,9 +62,19 @@ export default function Register() {
       nombre: `${nombre.trim()} ${apellido.trim()}`,
       email: email.trim().toLowerCase(),
       rut: formatRut(rut),
+      password,
     });
+    setSending(false);
+    if (result.error || !result.id) {
+      // El servidor vuelve a validar todo: si rechaza un campo, se muestra junto a ese campo.
+      const fields = result.fields ?? {};
+      setErrors(fields);
+      setServerError(result.error ?? 'No se pudo enviar la solicitud');
+      if (['nombre', 'email', 'rut', 'password'].some((k) => k in fields)) setStep(1);
+      return;
+    }
     // Solo el id va en la URL (no datos personales como el email).
-    router.replace({ pathname: '/auth/pendiente', params: { id } });
+    router.replace({ pathname: '/auth/pendiente', params: { id: result.id } });
   };
 
   return (
@@ -81,6 +95,12 @@ export default function Register() {
             <Text style={[styles.stepText, step !== 2 && { color: colors.textSecondary }]}>2</Text>
           </View>
         </View>
+
+        {serverError && (
+          <Text style={styles.serverError} accessibilityRole="alert">
+            {serverError}
+          </Text>
+        )}
 
         {step === 1 ? (
           <>
@@ -149,7 +169,7 @@ export default function Register() {
               keyboardType="phone-pad"
               error={errors.telefono}
             />
-            <Button title="Enviar solicitud" icon="send" onPress={submit} />
+            <Button title="Enviar solicitud" icon="send" onPress={() => void submit()} loading={sending} />
             <Button title="Volver" variant="ghost" onPress={() => setStep(1)} />
           </>
         )}
@@ -175,4 +195,12 @@ const styles = StyleSheet.create({
   text: { fontSize: font.sm, color: colors.textSecondary, marginTop: 2 },
   label: { fontSize: font.sm, fontFamily: fonts.semibold, color: colors.text },
   error: { fontSize: font.xs, color: colors.danger, fontFamily: fonts.semibold },
+  serverError: {
+    fontSize: font.sm,
+    color: colors.danger,
+    fontFamily: fonts.bold,
+    backgroundColor: colors.dangerLight,
+    padding: spacing.md,
+    borderRadius: 12,
+  },
 });
